@@ -5,16 +5,21 @@
  */
 package rodaroda;
 
+
+import Views.ViewConfiguracao;
+
 /**
  *
  * @author raphael
  */
 public class RodaRoda {
     
-    Configuracoes conf;
-    
+    Views.ViewConfiguracao viewConfiguracao;
+    Controllers.ControllerPalavra controllerPalavra;
     public RodaRoda() {
-        conf = new Configuracoes();        
+        viewConfiguracao = new ViewConfiguracao();
+        controllerPalavra = new Controllers.ControllerPalavra();
+        controllerPalavra.setarPalavra();
     }
     
     
