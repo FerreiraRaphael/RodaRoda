@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rodaroda;
+package utils;
 
 /**
  *
  * @author raphael
  */
-public class Main {
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Models.RodaRoda rodaroda = new Models.RodaRoda();
+public class Utils {
+    public int aleatorio(int min, int max) {
+        int range;
+        range = (max - min) + 1;
+        return (int) (Math.random() * range) + min;
     }
 }

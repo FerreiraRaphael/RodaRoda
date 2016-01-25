@@ -3,18 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rodaroda;
+package Controllers;
 
 /**
  *
  * @author raphael
  */
-public class Main {
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Models.RodaRoda rodaroda = new Models.RodaRoda();
+public class ControllerRoda {
+    public void rodar(Jogador jogador){
+         this.roda[aleatorio(0, this.roda.size())];
     }
 }

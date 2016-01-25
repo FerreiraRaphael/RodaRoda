@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rodaroda;
+package Models;
 
-
-import Views.ViewConfiguracao;
+import java.io.IOException;
 
 /**
  *
@@ -16,8 +15,8 @@ public class RodaRoda {
     
     Views.ViewConfiguracao viewConfiguracao;
     Controllers.ControllerPalavra controllerPalavra;
-    public RodaRoda() {
-        viewConfiguracao = new ViewConfiguracao();
+    public RodaRoda() throws IOException {
+        viewConfiguracao = new Views.ViewConfiguracao();
         controllerPalavra = new Controllers.ControllerPalavra();
         controllerPalavra.setarPalavra();
     }
