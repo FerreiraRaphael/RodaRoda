@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author raphael
  */
-public class Palavra {
+public class Palavra implements Model {
     private final List<Object> categorias;
     private final List<Object> palavras;
     private String categoriaSelecionada;

@@ -5,13 +5,11 @@
  */
 package Models;
 
-import java.util.HashMap;
-
 /**
  *
  * @author raphael
  */
-public final class Configuracao {
+public final class Configuracao implements Model{
 
     
     private final int numeroJogadores;

@@ -16,13 +16,9 @@ public final class ViewConfiguracao {
     Controllers.ControllerConfiguracao controllerConfiguracoes;
     private final Scanner scan;
 
-    public ViewConfiguracao() {
-        controllerConfiguracoes = new Controllers.ControllerConfiguracao();
+    public ViewConfiguracao(Controllers.ControllerConfiguracao controller) {
+        controllerConfiguracoes = controller;
         scan = new Scanner(System.in);
-        selecionarNumeroJogadores();
-        selecionarNumeroEtapas();
-        selecionarNumeroPalavras();
-        controllerConfiguracoes.iniciarConfiguracoes();
     }
 
     public void selecionarNumeroJogadores() {

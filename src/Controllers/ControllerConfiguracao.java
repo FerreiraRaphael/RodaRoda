@@ -11,10 +11,15 @@ package Controllers;
  *
  * @author raphael
  */
-public class ControllerConfiguracao {
+public class ControllerConfiguracao implements Controller{
     private final int limiteNumeroJogadores;
     private final int limiteNumeroPalavras;
-
+    private final int limiteNumeroEtapas;
+    private int numeroJogares;
+    private int numeroPalavras;
+    private int numeroEtapas;
+    private Models.Configuracao configuracao;
+    
     public int getLimiteNumeroJogadores() {
         return limiteNumeroJogadores;
     }
@@ -26,11 +31,7 @@ public class ControllerConfiguracao {
     public int getLimiteNumeroEtapas() {
         return limiteNumeroEtapas;
     }
-    private final int limiteNumeroEtapas;
-    private int numeroJogares;
-    private int numeroPalavras;
-    private int numeroEtapas;
-
+    
     public ControllerConfiguracao() {
         this.limiteNumeroJogadores = 3;
         this.limiteNumeroPalavras = 3;
@@ -59,8 +60,11 @@ public class ControllerConfiguracao {
             return false;
     }
     public void iniciarConfiguracoes(){
-        Models.Configuracao configuracoes = new Models.Configuracao(numeroJogares, numeroPalavras, numeroEtapas);
+        this.configuracao = new Models.Configuracao(numeroJogares, numeroPalavras, numeroEtapas);
     }
-    
 
+    @Override
+    public Models.Model getModel() {
+           return this.configuracao;
+    }
 }

@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import Models.Model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +16,26 @@ import utils.Arquivo;
  *
  * @author raphael
  */
-public class ControllerPalavra extends Arquivo{
-    List<Object> palavras;
-    String categoriaSelecionada;
-
+public class ControllerPalavra extends Arquivo implements Controller{
+    private List<Object> palavras;
+    private String categoriaSelecionada;
+    private Models.Palavra palavra;
     public ControllerPalavra() {
         this.palavras = new ArrayList<>();
     }
     
     public void setarPalavra() throws IOException {
-        Models.Palavra palavra = new Models.Palavra();
+        palavra = new Models.Palavra();
         escolherArquivo("/Categorias");
         this.palavras = lerArquivo(getFile(), (ArrayList) palavras);
         String palavraSelecionada = this.palavras.get(aleatorio(0, this.palavras.size())).toString();
         palavra.setCategoriaSelecionada(categoriaSelecionada);
         palavra.setPalavraSelecionada(palavraSelecionada);
+    }
+
+    @Override
+    public Model getModel() {
+        return this.palavra;
     }
     
 }

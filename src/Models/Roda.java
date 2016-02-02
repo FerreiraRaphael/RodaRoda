@@ -7,20 +7,19 @@ package Models;
 
 import java.util.ArrayList;
 import java.util.List;
-import utils.Utils;
 
 /**
  *
  * @author raphael
  */
-public class Roda{
+public class Roda extends utils.Utils implements Model{
 
-    private void somarPontos(int pontos) {
-    }
-
-    private void perderVez() {
-    }
-    List<Object> roda;
+//    private void somarPontos(int pontos) {
+//    }
+//
+//    private void perderVez() {
+//    }
+    List<Object> valores;
     
     /*
     duas divisões de perde tudo ,
@@ -32,27 +31,30 @@ public class Roda{
     duas divisões de 1000 pontos.
     */
     public Roda() {
-        roda = new ArrayList<>();
-        roda.add("lost");
-        roda.add("lost");
-        roda.add("pass");
-        roda.add("pass");
-        roda.add(100);
-        roda.add(100);
-        roda.add(100);
-        roda.add(100);
-        roda.add(200);
-        roda.add(200);
-        roda.add(200);
-        roda.add(200);
-        roda.add(400);
-        roda.add(400);
-        roda.add(400);
-        roda.add(400);
-        roda.add(500);
-        roda.add(500);
-        roda.add(1000);
-        roda.add(1000);
+        valores = new ArrayList<>();
+        valores.add("lost");
+        valores.add("lost");
+        valores.add("pass");
+        valores.add("pass");
+        valores.add(100);
+        valores.add(100);
+        valores.add(100);
+        valores.add(100);
+        valores.add(200);
+        valores.add(200);
+        valores.add(200);
+        valores.add(200);
+        valores.add(400);
+        valores.add(400);
+        valores.add(400);
+        valores.add(400);
+        valores.add(500);
+        valores.add(500);
+        valores.add(1000);
+        valores.add(1000);
+    }
+    public Object getValor(){
+        return this.valores.get(aleatorio(0, this.valores.size()));
     }
     
 }

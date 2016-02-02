@@ -5,21 +5,26 @@
  */
 package Models;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  *
  * @author raphael
  */
-public class RodaRoda {
+public class RodaRoda implements Model{
     
-    Views.ViewConfiguracao viewConfiguracao;
-    Controllers.ControllerPalavra controllerPalavra;
-    public RodaRoda() throws IOException {
-        viewConfiguracao = new Views.ViewConfiguracao();
-        controllerPalavra = new Controllers.ControllerPalavra();
-        controllerPalavra.setarPalavra();
+    
+    private List<Controllers.ControllerJogador> controllersJogadores;
+    public RodaRoda() {
+        //
     }
+    public void adicionarJogador(Controllers.ControllerJogador jogador){
+        this.controllersJogadores.add(jogador);
+    }
+    public List<Controllers.ControllerJogador> getJogadores(){
+        return this.controllersJogadores;
+    };
+    
     
     
 }

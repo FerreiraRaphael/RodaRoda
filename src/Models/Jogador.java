@@ -9,7 +9,7 @@ package Models;
  *
  * @author raphael
  */
-public class Jogador {
+public class Jogador implements Model {
     
     private int pontos;
 
@@ -27,8 +27,8 @@ public class Jogador {
      *
      * @param numero numero a ser somado 
      */
-    public void somarPontos(int numero){
-        this.pontos += numero;
+    public void setPontos(int numero){
+        this.pontos = numero;
     }
 
 }
