@@ -9,24 +9,25 @@ package Models;
  *
  * @author raphael
  */
-public final class Configuracao implements Model{
+public final class Configuracao {
 
+    private int numeroJogadores;
+    private int numeroPalavras;
+    private int numeroEtapas;
     
-    private final int numeroJogadores;
-    private final int numeroPalavras;
-    private final int numeroEtapas;
-
-    public Configuracao(int numeroJogadores, int numeroPalavras, int numeroEtapas) {
- 
+    public void setNumeroJogadores(int numeroJogadores) {
         this.numeroJogadores = numeroJogadores;
-        this.numeroPalavras = numeroPalavras;
-        this.numeroEtapas = numeroEtapas;
-        //System.out.println(this.numeroEtapas);
-        //System.out.println(this.numeroJogadores);
-        //System.out.println(this.numeroPalavras);
     }
 
-    public int getNumeroJogadores() {
+    public void setNumeroPalavras(int numeroPalavras) {
+        this.numeroPalavras = numeroPalavras;
+    }
+
+    public void setNumeroEtapas(int numeroEtapas) {
+        this.numeroEtapas = numeroEtapas;
+    }
+
+    public Object getNumeroJogadores() {
         return numeroJogadores;
     }
 

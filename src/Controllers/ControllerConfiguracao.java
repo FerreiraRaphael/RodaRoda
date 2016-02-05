@@ -5,21 +5,29 @@
  */
 package Controllers;
 
-
-
+import Models.Configuracao;
+import org.json.simple.JSONObject;
 /**
  *
  * @author raphael
  */
-public class ControllerConfiguracao implements Controller{
+public final class ControllerConfiguracao extends Controller implements ControllerAbstrato{
+    private Configuracao configuracao;
+    
     private final int limiteNumeroJogadores;
     private final int limiteNumeroPalavras;
     private final int limiteNumeroEtapas;
-    private int numeroJogares;
-    private int numeroPalavras;
-    private int numeroEtapas;
-    private Models.Configuracao configuracao;
     
+    private JSONObject Dados;
+    
+    public ControllerConfiguracao() {
+        configuracao = new Models.Configuracao();
+        limiteNumeroJogadores = 3;
+        limiteNumeroPalavras = 3;
+        limiteNumeroEtapas = 7;
+        inicializarDados();
+    }
+
     public int getLimiteNumeroJogadores() {
         return limiteNumeroJogadores;
     }
@@ -32,39 +40,44 @@ public class ControllerConfiguracao implements Controller{
         return limiteNumeroEtapas;
     }
     
-    public ControllerConfiguracao() {
-        this.limiteNumeroJogadores = 3;
-        this.limiteNumeroPalavras = 3;
-        this.limiteNumeroEtapas = 7;
-    }
-
     public boolean setNumeroJogadores(int numero) {
         if (numero >= 1 && numero <= limiteNumeroJogadores) {
-            this.numeroJogares = numero;
+            set("numeroJogadores",numero);
             return true;
         } else 
             return false;
     }
     public boolean setNumeroPalavras(int numero) {
         if (numero >= 1 && numero <= limiteNumeroPalavras) {
-            this.numeroPalavras = numero;
+            set("numeroPalavras",numero);
             return true;
         } else 
             return false;
     }
     public boolean setNumeroEtapas(int numero) {
         if (numero >= 1 && numero <= limiteNumeroEtapas) {
-            this.numeroEtapas = numero;
+            set("numeroJogadores",numero);
             return true;
         } else 
             return false;
     }
-    public void iniciarConfiguracoes(){
-        this.configuracao = new Models.Configuracao(numeroJogares, numeroPalavras, numeroEtapas);
+
+    @Override
+    public void inicializarDados() {
+        set("numeroEtapas", configuracao.getNumeroEtapas());
+        set("numeroPalavras", configuracao.getNumeroPalavras());
+        set("numeroJogadores", configuracao.getNumeroJogadores());
     }
 
     @Override
-    public Models.Model getModel() {
-           return this.configuracao;
+    public void carregarDados(JSONObject Dados) {
+        configuracao.setNumeroEtapas((int) Dados.get("numeroEtapas"));
+        configuracao.setNumeroPalavras((int) Dados.get("numeroPalavras"));
+        configuracao.setNumeroEtapas((int) Dados.get("numeroEtapas"));
+    }
+
+    @Override
+    public void atualizarDados() {
+        carregarDados(getJSON());
     }
 }

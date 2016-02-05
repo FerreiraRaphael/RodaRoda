@@ -5,6 +5,9 @@
  */
 package rodaroda;
 
+import Models.Configuracao;
+import java.lang.reflect.Field;
+
 /**
  *
  * @author raphael
@@ -15,6 +18,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Models.RodaRoda rodaroda = new Models.RodaRoda();
+        
+        Field[] fields = Configuracao.class.getDeclaredFields();
+        
+        
+        System.out.println("rodaroda.Main.main()");
     }
 }

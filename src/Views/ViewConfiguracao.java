@@ -11,14 +11,12 @@ import java.util.Scanner;
  *
  * @author raphael
  */
-public final class ViewConfiguracao {
+public final class ViewConfiguracao extends View{
 
     Controllers.ControllerConfiguracao controllerConfiguracoes;
-    private final Scanner scan;
 
     public ViewConfiguracao(Controllers.ControllerConfiguracao controller) {
         controllerConfiguracoes = controller;
-        scan = new Scanner(System.in);
     }
 
     public void selecionarNumeroJogadores() {
@@ -66,17 +64,5 @@ public final class ViewConfiguracao {
         }
     }
 
-    private static void clearConsole() {
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) 
-                Runtime.getRuntime().exec("cls");
-             else 
-                Runtime.getRuntime().exec("clear");
-            System.out.flush();
-        } catch (final Exception e) {
-            System.out.println("Não foi possível limpar o console");
-            System.out.println(e);
-        }
-    }
+    
 }

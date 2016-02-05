@@ -5,14 +5,13 @@
  */
 package Models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author raphael
  */
-public class Roda extends utils.Utils implements Model{
+public class Roda{
 
 //    private void somarPontos(int pontos) {
 //    }
@@ -30,31 +29,11 @@ public class Roda extends utils.Utils implements Model{
     duas divisões de 500 pontos ,
     duas divisões de 1000 pontos.
     */
-    public Roda() {
-        valores = new ArrayList<>();
-        valores.add("lost");
-        valores.add("lost");
-        valores.add("pass");
-        valores.add("pass");
-        valores.add(100);
-        valores.add(100);
-        valores.add(100);
-        valores.add(100);
-        valores.add(200);
-        valores.add(200);
-        valores.add(200);
-        valores.add(200);
-        valores.add(400);
-        valores.add(400);
-        valores.add(400);
-        valores.add(400);
-        valores.add(500);
-        valores.add(500);
-        valores.add(1000);
-        valores.add(1000);
-    }
-    public Object getValor(){
-        return this.valores.get(aleatorio(0, this.valores.size()));
-    }
     
+    public List<Object> getRoda(){
+        return this.valores;
+    }
+    public void setRoda(List<Object> lista){
+        valores = lista;
+    }
 }

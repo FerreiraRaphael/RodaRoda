@@ -5,22 +5,26 @@
  */
 package Models;
 
+import Controllers.ControllerJogador;
 import java.util.List;
 
 /**
  *
  * @author raphael
  */
-public class RodaRoda implements Model{
+public class RodaRoda {
     
     
     private List<Controllers.ControllerJogador> controllersJogadores;
-    public RodaRoda() {
-        //
+    
+    public void setJogador(ControllerJogador jogador){
+        controllersJogadores.add(jogador);
     }
-    public void adicionarJogador(Controllers.ControllerJogador jogador){
-        this.controllersJogadores.add(jogador);
+    
+    public void setJogadores(List<ControllerJogador> jogadores){
+        controllersJogadores = (jogadores);
     }
+    
     public List<Controllers.ControllerJogador> getJogadores(){
         return this.controllersJogadores;
     };

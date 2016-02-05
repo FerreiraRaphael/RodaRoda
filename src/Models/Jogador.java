@@ -9,9 +9,24 @@ package Models;
  *
  * @author raphael
  */
-public class Jogador implements Model {
+public class Jogador {
+    
     
     private int pontos;
+    private String nome;
+
+    public Jogador() {
+        nome = "";
+        pontos = 0;
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     /**
      * Get the value of pontos

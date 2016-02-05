@@ -5,17 +5,13 @@
  */
 package Models;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  *
  * @author raphael
  */
-public class Palavra implements Model {
-    private final List<Object> categorias;
-    private final List<Object> palavras;
+public class Palavra {
     private String categoriaSelecionada;
     private String palavraSelecionada;
 
@@ -34,20 +30,10 @@ public class Palavra implements Model {
 
     public void setPalavraSelecionada(String palavraSelecionada) {
         this.palavraSelecionada = palavraSelecionada;
-        //System.out.println(this.palavraSelecionada);
     }
 
-    public List<Object> getCategorias() {
-        return categorias;
-    }
-
-    public List<Object> getPalavras() {
-        return palavras;
-    }
-    
     public Palavra() {
-        this.categorias = new ArrayList<>();
-        this.palavras = new ArrayList<>();
+        categoriaSelecionada = "";
+        palavraSelecionada = "";
     }
-
 }

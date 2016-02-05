@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models;
+package Views;
 
 /**
  *
  * @author raphael
  */
-public interface Model {
-    
+public class ViewRoda extends View{
+    public void perdeuVez(){
+        
+    }
 }
