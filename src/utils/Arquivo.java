@@ -60,6 +60,9 @@ public class Arquivo extends Utils {
                     ex.getMessage());
             return lista;
         }
-        
     }
+    
+    public String getName(){
+            return file.getName();
+        }
 }

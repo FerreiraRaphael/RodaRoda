@@ -9,6 +9,7 @@ import Models.RodaRoda;
 import Views.ViewConfiguracao;
 import Views.ViewRodaRoda;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.json.simple.JSONObject;
 import utils.Utils;
@@ -28,8 +29,9 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
     private int proximo;
     
     public ControllerRodaRoda(){
+        controllerRoda = new ControllerRoda();
         controllerPalavra = new ControllerPalavra();
-        viewRodaRoda = new ViewRodaRoda(controllerPalavra);
+        viewRodaRoda = new ViewRodaRoda(controllerPalavra,this);
         rodaroda = new RodaRoda();
         utils = new Utils();
         inicializarDados();
@@ -37,7 +39,7 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
     public void iniciar() throws IOException {
         setarConfigurações();
         setarJogadores();
-        //jogo();
+        rodarEtapas();
     }
     
     private void setarConfigurações(){
@@ -48,52 +50,65 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
         viewConfiguracao.selecionarNumeroPalavras();
         controllerConfiguracao.atualizarDados();
     }
-    private void setarJogadores(){
-        List<ControllerJogador> jogadores = null;
+    private ArrayList<ControllerJogador> setarJogadores(){
+        ArrayList<ControllerJogador> jogadores = new ArrayList<>();
         for (int i = 0; i < (int) controllerConfiguracao.get("numeroJogadores"); i++) {
             ControllerJogador jogador = new ControllerJogador(this);
             jogador.set("nome", viewRodaRoda.adicionarJogador());
             jogador.set("pontos", 0);
             jogador.atualizarDados();
             jogadores.add(jogador);
+            set(jogador,0);
         }
         set("jogadores",jogadores);
+        viewRodaRoda.setJogadores(jogadores);
+        return jogadores;
     }
     
-    private void etapas(){
+    private void rodarEtapas() throws IOException{
         for (int i = 0; i <  (int) controllerConfiguracao.get("numeroEtapas") ; i++) {
-            for (int j = 0; j < (int) controllerConfiguracao.get("numeroPalavras"); j++) {
-                //iniciarRodaRoda(jogadores);
-            }
+            iniciarRodaRoda((ArrayList<ControllerJogador>) get("jogadores"));
+            
         }
     }
     
-    public Controllers.ControllerJogador proximo(){
-        List<Controllers.ControllerJogador> jogadores = (List<Controllers.ControllerJogador>) get("jogadores");
+    public ControllerJogador proximo(){
+        ArrayList<ControllerJogador> jogadores = (ArrayList<ControllerJogador>) get("jogadores");
         jogadores.get(proximo).atualizarDados();
         proximo++;
-        if(proximo < jogadores.size())
+        if( proximo >= jogadores.size() - 1 )
             proximo = 0;
         
         return jogadores.get(proximo);
     } 
     
-    private void jogar(Controllers.ControllerJogador jogador){
-        controllerRoda.rodar(jogador);
+    private boolean jogar(ControllerJogador jogador){
+        Object[] valor = controllerRoda.rodar(jogador);
+        int pontosNaRoda = (int) get(jogador);
+        set("valor", valor);
+        if ((boolean) valor[0]) {
+            if(jogador.fazerTentativa(controllerPalavra)){
+                set(jogador, pontosNaRoda + (int) valor[1]);
+                return true;
+                }
+        } else if (valor[1].equals(1)) {
+            set(jogador, 0);
+        }
+        return false;
     }
     
-    private void iniciarRodaRoda(List<Controllers.ControllerJogador> jogadores) throws IOException{
+    private void iniciarRodaRoda(ArrayList<Controllers.ControllerJogador> jogadores) throws IOException{
         ControllerJogador jogador;
-        viewRodaRoda.setJogadores(jogadores);
         boolean continuar;
         continuar = true;
         proximo = utils.aleatorio(0, jogadores.size()-1);
         jogador = jogadores.get(proximo);
-        controllerPalavra.setarPalavra();
+        controllerPalavra.escolherPalavras(controllerConfiguracao);
         while(continuar){
-            jogar(jogador);
-            jogador = proximo();
-            continuar = controllerPalavra.verificarPalavraSecreta();
+            viewRodaRoda.telaInicial();
+            if(!jogar(jogador))
+                jogador = proximo();
+            continuar = !controllerPalavra.verificarPalavraSecreta();
         }
     }
     
@@ -104,7 +119,7 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
 
     @Override
     public void carregarDados(JSONObject Dados) {
-        rodaroda.setJogadores((List<ControllerJogador>) Dados.get("jogadores"));
+        rodaroda.setJogadores((ArrayList<ControllerJogador>) Dados.get("jogadores"));
     }
 
     @Override

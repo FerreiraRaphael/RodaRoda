@@ -5,6 +5,8 @@
  */
 package utils;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author raphael
@@ -14,5 +16,16 @@ public class Utils {
         int range;
         range = (max - min) + 1;
         return (int) (Math.random() * range) + min;
+    }
+    
+    public String unirString(ArrayList<String> strings){
+        String retorno = "";
+        for(String string : strings){
+            if(retorno.equals(""))
+                retorno = string;
+            else
+                retorno = retorno + " " +string;
+        }
+        return retorno;
     }
 }

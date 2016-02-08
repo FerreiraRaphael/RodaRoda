@@ -6,6 +6,7 @@
 package Models;
 
 import Controllers.ControllerJogador;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,17 +16,17 @@ import java.util.List;
 public class RodaRoda {
     
     
-    private List<Controllers.ControllerJogador> controllersJogadores;
+    private ArrayList<Controllers.ControllerJogador> controllersJogadores;
     
     public void setJogador(ControllerJogador jogador){
         controllersJogadores.add(jogador);
     }
     
-    public void setJogadores(List<ControllerJogador> jogadores){
+    public void setJogadores(ArrayList<ControllerJogador> jogadores){
         controllersJogadores = (jogadores);
     }
     
-    public List<Controllers.ControllerJogador> getJogadores(){
+    public ArrayList<Controllers.ControllerJogador> getJogadores(){
         return this.controllersJogadores;
     };
     

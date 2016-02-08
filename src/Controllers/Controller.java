@@ -15,6 +15,7 @@ public class Controller {
     private JSONObject Armazenamento;
     
     public Controller() {
+        Armazenamento = new JSONObject();
         Armazenamento.put("id", "");
         
     }

@@ -21,7 +21,7 @@ public final class ViewConfiguracao extends View{
 
     public void selecionarNumeroJogadores() {
         clearConsole();
-        System.out.println("Escolha o número de jogadores:");
+        System.out.println("Escolha o número de Jogadores:");
         System.out.println("Limite entre 1 e " + controllerConfiguracoes.getLimiteNumeroJogadores());
         int numero = scan.nextInt();
         if (controllerConfiguracoes.setNumeroJogadores(numero)) {
@@ -51,7 +51,7 @@ public final class ViewConfiguracao extends View{
 
     public void selecionarNumeroEtapas() {
         clearConsole();
-        System.out.println("Escolha o número de jogadores:");
+        System.out.println("Escolha o número de Etapas:");
         System.out.println("Limite entre 1 e " + controllerConfiguracoes.getLimiteNumeroEtapas());
         int numero = scan.nextInt();
         if (controllerConfiguracoes.setNumeroEtapas(numero)) {

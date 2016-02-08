@@ -5,6 +5,7 @@
  */
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class Roda{
 //
 //    private void perderVez() {
 //    }
-    List<Object> valores;
+    ArrayList<Object[]> valores;
     
     /*
     duas divisões de perde tudo ,
@@ -30,10 +31,10 @@ public class Roda{
     duas divisões de 1000 pontos.
     */
     
-    public List<Object> getRoda(){
+    public ArrayList<Object []> getRoda(){
         return this.valores;
     }
-    public void setRoda(List<Object> lista){
+    public void setRoda(ArrayList<Object []> lista){
         valores = lista;
     }
 }

@@ -56,7 +56,7 @@ public final class ControllerConfiguracao extends Controller implements Controll
     }
     public boolean setNumeroEtapas(int numero) {
         if (numero >= 1 && numero <= limiteNumeroEtapas) {
-            set("numeroJogadores",numero);
+            set("numeroEtapas",numero);
             return true;
         } else 
             return false;
@@ -67,6 +67,7 @@ public final class ControllerConfiguracao extends Controller implements Controll
         set("numeroEtapas", configuracao.getNumeroEtapas());
         set("numeroPalavras", configuracao.getNumeroPalavras());
         set("numeroJogadores", configuracao.getNumeroJogadores());
+        set("diferentesCategorias", false);
     }
 
     @Override

@@ -5,8 +5,11 @@
  */
 package rodaroda;
 
-import Models.Configuracao;
-import java.lang.reflect.Field;
+import Controllers.ControllerRodaRoda;
+import View.MainFrame;
+
+import java.io.IOException;
+
 
 /**
  *
@@ -17,11 +20,12 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        
-        Field[] fields = Configuracao.class.getDeclaredFields();
-        
-        
-        System.out.println("rodaroda.Main.main()");
+    public static void main(String[] args) throws IOException {
+        //ControllerRodaRoda rodaroda = new ControllerRodaRoda();
+        //rodaroda.iniciar();
+        MainFrame mainFrame = new MainFrame();
+        mainFrame.viewInicial();
+        mainFrame.setVisible(true);
+                
     }
 }

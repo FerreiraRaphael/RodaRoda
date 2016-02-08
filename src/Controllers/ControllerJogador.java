@@ -5,31 +5,45 @@
  */
 package Controllers;
 
+import Views.ViewRodaRoda;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author raphael
  */
-public final class ControllerJogador extends Controller implements ControllerAbstrato{
+public final class ControllerJogador extends Controller implements ControllerAbstrato {
+
     private final Models.Jogador jogador;
     private final ControllerRodaRoda controllerRodaRoda;
+
     public ControllerJogador(ControllerRodaRoda controllerRodaRoda) {
         this.controllerRodaRoda = controllerRodaRoda;
         this.jogador = new Models.Jogador();
         inicializarDados();
     }
-    
-    public void perderVez(){
-        controllerRodaRoda.proximo();
+
+    public boolean fazerTentativa(ControllerPalavra controllerPalavra) {
+        ViewRodaRoda view = new ViewRodaRoda(controllerPalavra);
+        String tentativa = view.escreverTentativa();
+        boolean acertou = false;
+        if (tentativa.length() == 1) {
+           if (controllerPalavra.compararLetra(tentativa.charAt(0))) {
+                acertou = true;
+            }
+        } else if (controllerPalavra.compararPalavra(tentativa)) {
+            acertou = true;
+        }
+        return acertou;
     }
-    
-    public void somarPontos(int pontos){
-        if(pontos > 0)
+
+    public void somarPontos(int pontos) {
+        if (pontos > 0) {
             pontos += (int) get("pontos");
-        else
+        } else {
             pontos = 0;
-        set("pontos",pontos);
+        }
+        set("pontos", pontos);
     }
 
     @Override
@@ -49,5 +63,4 @@ public final class ControllerJogador extends Controller implements ControllerAbs
         carregarDados(getJSON());
     }
 
-    
 }
