@@ -5,25 +5,35 @@
  */
 package View;
 
-import Controllers.ControllerAbstrato;
-import Controllers.ControllerRodaRoda;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author raphael
  */
-public class ViewInicial extends javax.swing.JPanel implements View
-{
-    ControllerRodaRoda controller;
+public class ViewInicial extends javax.swing.JFrame {
+
+    private ViewRodaRoda vwRodaRoda;
+    private final ViewConfiguracoes vwConf;
+    private JSONObject json;
+
+    public JSONObject getJson() {
+        return json;
+    }
+
+    public void setJson(JSONObject json) {
+        this.json = json;
+    }
     /**
-     * Creates new form ViewInicial
+     * Creates new form ViewFrame
      */
     public ViewInicial() {
+        this.json = new JSONObject();
         initComponents();
+        //vwRodaRoda = new ViewRodaRoda(this);
+        vwConf = new ViewConfiguracoes(this);
     }
 
     /**
@@ -34,50 +44,40 @@ public class ViewInicial extends javax.swing.JPanel implements View
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel1 = new javax.swing.JPanel();
         pnHeader = new javax.swing.JPanel();
         lbHeader = new javax.swing.JLabel();
         pnBotoes = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         btnIniciar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         btnConfiguracoes = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
         btnSair = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(450, 450));
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(450, 450));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         pnHeader.setBorder(new javax.swing.border.MatteBorder(null));
         pnHeader.setPreferredSize(new java.awt.Dimension(250, 150));
+        pnHeader.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 50));
 
         lbHeader.setFont(new java.awt.Font("Dialog", 3, 48)); // NOI18N
         lbHeader.setText("Roda a Roda");
         lbHeader.setAlignmentX(0.5F);
+        pnHeader.add(lbHeader);
 
-        javax.swing.GroupLayout pnHeaderLayout = new javax.swing.GroupLayout(pnHeader);
-        pnHeader.setLayout(pnHeaderLayout);
-        pnHeaderLayout.setHorizontalGroup(
-            pnHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnHeaderLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(lbHeader)
-                .addContainerGap(490, Short.MAX_VALUE))
-        );
-        pnHeaderLayout.setVerticalGroup(
-            pnHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnHeaderLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(lbHeader)
-                .addContainerGap(53, Short.MAX_VALUE))
-        );
-
-        add(pnHeader);
+        jPanel1.add(pnHeader);
 
         pnBotoes.setBorder(new javax.swing.border.MatteBorder(null));
-        java.awt.GridBagLayout jPanel2Layout = new java.awt.GridBagLayout();
-        jPanel2Layout.columnWidths = new int[] {0};
-        jPanel2Layout.rowHeights = new int[] {0, 5, 0, 5, 0};
-        pnBotoes.setLayout(jPanel2Layout);
+        pnBotoes.setLayout(new java.awt.GridLayout(3, 1));
+
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 20));
 
         btnIniciar.setText("Iniciar");
         btnIniciar.setAlignmentX(0.5F);
@@ -94,12 +94,11 @@ public class ViewInicial extends javax.swing.JPanel implements View
                 btnIniciarActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weighty = 0.9;
-        gridBagConstraints.insets = new java.awt.Insets(17, 127, 4, 155);
-        pnBotoes.add(btnIniciar, gridBagConstraints);
+        jPanel2.add(btnIniciar);
+
+        pnBotoes.add(jPanel2);
+
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 20));
 
         btnConfiguracoes.setText("Configurações");
         btnConfiguracoes.setAlignmentX(0.5F);
@@ -111,67 +110,79 @@ public class ViewInicial extends javax.swing.JPanel implements View
                 btnConfiguracoesMouseClicked(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.weighty = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(22, 127, 4, 155);
-        pnBotoes.add(btnConfiguracoes, gridBagConstraints);
+        jPanel3.add(btnConfiguracoes);
+
+        pnBotoes.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 20));
 
         btnSair.setText("Sair");
         btnSair.setAlignmentX(0.5F);
         btnSair.setMaximumSize(new java.awt.Dimension(150, 50));
         btnSair.setMinimumSize(new java.awt.Dimension(150, 50));
         btnSair.setPreferredSize(new java.awt.Dimension(150, 50));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(22, 127, 36, 155);
-        pnBotoes.add(btnSair, gridBagConstraints);
+        jPanel4.add(btnSair);
 
-        add(pnBotoes);
+        pnBotoes.add(jPanel4);
+
+        jPanel1.add(pnBotoes);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        
-    }//GEN-LAST:event_btnIniciarActionPerformed
-
     private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
-        try {
-            controller.ligar();
-        } catch (IOException ex) {
-            Logger.getLogger(ViewInicial.class.getName()).log(Level.SEVERE, null, ex);
+        if(json.get("numeroJogadores")!=null && json.get("numeroEtapas")!=null && json.get("numeroPalavras")!=null && json.get("erro") == null){
+            vwRodaRoda = new ViewRodaRoda(this, json);
+            trocarJanela(vwRodaRoda);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Você deve escolher as configurações do jogo primeiro");
+            trocarJanela(vwConf);
         }
     }//GEN-LAST:event_btnIniciarMouseClicked
 
+    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+
+    }//GEN-LAST:event_btnIniciarActionPerformed
+
     private void btnConfiguracoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfiguracoesMouseClicked
-        try {
-            controller.configuracoes();
-        } catch (IOException ex) {
-            Logger.getLogger(ViewInicial.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        trocarJanela(vwConf);
     }//GEN-LAST:event_btnConfiguracoesMouseClicked
-
-
+    
+    private void trocarJanela(JFrame janela){
+        this.setVisible(false);
+        janela.setSize(this.getSize());
+        janela.setLocationRelativeTo(this);
+        janela.setVisible(true);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfiguracoes;
     private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnSair;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbHeader;
     private javax.swing.JPanel pnBotoes;
     private javax.swing.JPanel pnHeader;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void setController(ControllerAbstrato controller) {
-        this.controller = (ControllerRodaRoda) controller;
-    }
-
-    @Override
-    public JSONObject getDados() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-  
 }

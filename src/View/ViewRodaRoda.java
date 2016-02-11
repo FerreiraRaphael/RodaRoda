@@ -5,20 +5,38 @@
  */
 package View;
 
-import Controllers.ControllerAbstrato;
+import Controllers.ControllerJogador;
+import Controllers.ControllerRoda;
+import Controllers.ControllerRodaRoda;
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author raphael
  */
-public class ViewRodaRoda extends javax.swing.JPanel implements View{
+public class ViewRodaRoda extends javax.swing.JFrame {
+
+    private final ViewInicial vwInicial;
+    private final ArrayList<ControllerJogador> jogadores;
+    private final ControllerRodaRoda controllerRodaRoda;
+
 
     /**
      * Creates new form ViewRodaRoda
+     *
+     * @param vwInicial
+     * @param configuracoes
      */
-    public ViewRodaRoda() {
+    public ViewRodaRoda(ViewInicial vwInicial, JSONObject configuracoes) {
         initComponents();
+        this.vwInicial = vwInicial;
+        jogadores = new ArrayList<>();
+        this.controllerRodaRoda = new ControllerRodaRoda();
+        setarValores(configuracoes);
     }
 
     /**
@@ -30,57 +48,13 @@ public class ViewRodaRoda extends javax.swing.JPanel implements View{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         mainContainer = new javax.swing.JPanel();
         containerNorte = new javax.swing.JPanel();
-        containerJogador = new javax.swing.JPanel();
-        lbNome = new javax.swing.JLabel();
-        lbValueNome = new javax.swing.JLabel();
-        lbPontos = new javax.swing.JLabel();
-        lbValuePontos = new javax.swing.JLabel();
-        lbValueRoda = new javax.swing.JLabel();
-        lbRoda = new javax.swing.JLabel();
         containerCentral = new javax.swing.JPanel();
         pnRoda = new javax.swing.JPanel();
         pnValor = new javax.swing.JPanel();
         lbValor = new javax.swing.JLabel();
-        pnValor1 = new javax.swing.JPanel();
-        lbValor1 = new javax.swing.JLabel();
-        pnValor2 = new javax.swing.JPanel();
-        lbValor2 = new javax.swing.JLabel();
-        pnValor3 = new javax.swing.JPanel();
-        lbValor3 = new javax.swing.JLabel();
-        pnValor4 = new javax.swing.JPanel();
-        lbValor4 = new javax.swing.JLabel();
-        pnValor5 = new javax.swing.JPanel();
-        lbValor5 = new javax.swing.JLabel();
-        pnValor6 = new javax.swing.JPanel();
-        lbValor6 = new javax.swing.JLabel();
-        pnValor7 = new javax.swing.JPanel();
-        lbValor7 = new javax.swing.JLabel();
-        pnValor8 = new javax.swing.JPanel();
-        lbValor8 = new javax.swing.JLabel();
-        pnValor9 = new javax.swing.JPanel();
-        lbValor9 = new javax.swing.JLabel();
-        pnValor10 = new javax.swing.JPanel();
-        lbValor10 = new javax.swing.JLabel();
-        pnValor11 = new javax.swing.JPanel();
-        lbValor11 = new javax.swing.JLabel();
-        pnValor12 = new javax.swing.JPanel();
-        lbValor12 = new javax.swing.JLabel();
-        pnValor13 = new javax.swing.JPanel();
-        lbValor13 = new javax.swing.JLabel();
-        pnValor14 = new javax.swing.JPanel();
-        lbValor14 = new javax.swing.JLabel();
-        pnValor15 = new javax.swing.JPanel();
-        lbValor15 = new javax.swing.JLabel();
-        pnValor16 = new javax.swing.JPanel();
-        lbValor16 = new javax.swing.JLabel();
-        pnValor17 = new javax.swing.JPanel();
-        lbValor17 = new javax.swing.JLabel();
-        pnValor18 = new javax.swing.JPanel();
-        lbValor18 = new javax.swing.JLabel();
-        pnValor19 = new javax.swing.JPanel();
-        lbValor19 = new javax.swing.JLabel();
         pnPalavra = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         containerSul = new javax.swing.JPanel();
@@ -88,237 +62,45 @@ public class ViewRodaRoda extends javax.swing.JPanel implements View{
         btnTentarPalavra = new javax.swing.JButton();
         btnTentar = new javax.swing.JButton();
         btnRodar = new javax.swing.JButton();
-        jPanel23 = new javax.swing.JPanel();
+        pnTxtField = new javax.swing.JPanel();
         txtFldValor = new javax.swing.JTextField();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
+
         mainContainer.setBackground(new java.awt.Color(158, 158, 158));
-        mainContainer.setLayout(new java.awt.GridLayout(3, 1));
+        mainContainer.setMinimumSize(new java.awt.Dimension(800, 600));
+        mainContainer.setPreferredSize(new java.awt.Dimension(800, 600));
+        mainContainer.setLayout(new java.awt.BorderLayout());
 
         containerNorte.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        containerNorte.setMinimumSize(new java.awt.Dimension(4, 124));
-        containerNorte.setLayout(new java.awt.GridLayout(3, 1, 1, 1));
-
-        containerJogador.setBackground(new java.awt.Color(250, 250, 250));
-        containerJogador.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        containerJogador.setPreferredSize(new java.awt.Dimension(130, 40));
-
-        lbNome.setText("Nome:");
-
-        lbValueNome.setText("jLabel2");
-
-        lbPontos.setText("Pontos:");
-
-        lbValuePontos.setText("jLabel4");
-
-        lbValueRoda.setText("jLabel5");
-
-        lbRoda.setText("Na Roda:");
-
-        javax.swing.GroupLayout containerJogadorLayout = new javax.swing.GroupLayout(containerJogador);
-        containerJogador.setLayout(containerJogadorLayout);
-        containerJogadorLayout.setHorizontalGroup(
-            containerJogadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerJogadorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(containerJogadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(containerJogadorLayout.createSequentialGroup()
-                        .addComponent(lbNome)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbValueNome))
-                    .addGroup(containerJogadorLayout.createSequentialGroup()
-                        .addComponent(lbPontos)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbValuePontos)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbRoda)
-                .addGap(18, 18, 18)
-                .addComponent(lbValueRoda)
-                .addContainerGap())
-        );
-        containerJogadorLayout.setVerticalGroup(
-            containerJogadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerJogadorLayout.createSequentialGroup()
-                .addGroup(containerJogadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNome)
-                    .addComponent(lbValueNome)
-                    .addComponent(lbValueRoda)
-                    .addComponent(lbRoda))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(containerJogadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPontos)
-                    .addComponent(lbValuePontos))
-                .addGap(0, 11, Short.MAX_VALUE))
-        );
-
-        containerNorte.add(containerJogador);
-
-        mainContainer.add(containerNorte);
+        containerNorte.setMaximumSize(new java.awt.Dimension(800, 200));
+        containerNorte.setMinimumSize(new java.awt.Dimension(4, 200));
+        containerNorte.setPreferredSize(new java.awt.Dimension(800, 200));
+        containerNorte.setLayout(new java.awt.GridLayout(3, 1));
+        mainContainer.add(containerNorte, java.awt.BorderLayout.NORTH);
 
         containerCentral.setBackground(new java.awt.Color(245, 245, 245));
         containerCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        containerCentral.setMaximumSize(new java.awt.Dimension(414, 150));
+        containerCentral.setMaximumSize(new java.awt.Dimension(800, 250));
         containerCentral.setMinimumSize(new java.awt.Dimension(0, 150));
-        containerCentral.setPreferredSize(new java.awt.Dimension(414, 150));
+        containerCentral.setPreferredSize(new java.awt.Dimension(800, 200));
 
         pnValor.setBackground(new java.awt.Color(255, 255, 255));
+        pnValor.setEnabled(false);
         pnValor.setPreferredSize(new java.awt.Dimension(70, 30));
 
         lbValor.setText("jLabel2");
         pnValor.add(lbValor);
 
         pnRoda.add(pnValor);
-
-        pnValor1.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor1.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor1.setText("jLabel2");
-        pnValor1.add(lbValor1);
-
-        pnRoda.add(pnValor1);
-
-        pnValor2.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor2.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor2.setText("jLabel2");
-        pnValor2.add(lbValor2);
-
-        pnRoda.add(pnValor2);
-
-        pnValor3.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor3.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor3.setText("jLabel2");
-        pnValor3.add(lbValor3);
-
-        pnRoda.add(pnValor3);
-
-        pnValor4.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor4.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor4.setText("jLabel2");
-        pnValor4.add(lbValor4);
-
-        pnRoda.add(pnValor4);
-
-        pnValor5.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor5.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor5.setText("jLabel2");
-        pnValor5.add(lbValor5);
-
-        pnRoda.add(pnValor5);
-
-        pnValor6.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor6.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor6.setText("jLabel2");
-        pnValor6.add(lbValor6);
-
-        pnRoda.add(pnValor6);
-
-        pnValor7.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor7.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor7.setText("jLabel2");
-        pnValor7.add(lbValor7);
-
-        pnRoda.add(pnValor7);
-
-        pnValor8.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor8.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor8.setText("jLabel2");
-        pnValor8.add(lbValor8);
-
-        pnRoda.add(pnValor8);
-
-        pnValor9.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor9.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor9.setText("jLabel2");
-        pnValor9.add(lbValor9);
-
-        pnRoda.add(pnValor9);
-
-        pnValor10.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor10.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor10.setText("jLabel2");
-        pnValor10.add(lbValor10);
-
-        pnRoda.add(pnValor10);
-
-        pnValor11.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor11.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor11.setText("jLabel2");
-        pnValor11.add(lbValor11);
-
-        pnRoda.add(pnValor11);
-
-        pnValor12.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor12.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor12.setText("jLabel2");
-        pnValor12.add(lbValor12);
-
-        pnRoda.add(pnValor12);
-
-        pnValor13.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor13.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor13.setText("jLabel2");
-        pnValor13.add(lbValor13);
-
-        pnRoda.add(pnValor13);
-
-        pnValor14.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor14.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor14.setText("jLabel2");
-        pnValor14.add(lbValor14);
-
-        pnRoda.add(pnValor14);
-
-        pnValor15.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor15.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor15.setText("jLabel2");
-        pnValor15.add(lbValor15);
-
-        pnRoda.add(pnValor15);
-
-        pnValor16.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor16.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor16.setText("jLabel2");
-        pnValor16.add(lbValor16);
-
-        pnRoda.add(pnValor16);
-
-        pnValor17.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor17.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor17.setText("jLabel2");
-        pnValor17.add(lbValor17);
-
-        pnRoda.add(pnValor17);
-
-        pnValor18.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor18.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor18.setText("jLabel2");
-        pnValor18.add(lbValor18);
-
-        pnRoda.add(pnValor18);
-
-        pnValor19.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor19.setPreferredSize(new java.awt.Dimension(70, 30));
-
-        lbValor19.setText("jLabel2");
-        pnValor19.add(lbValor19);
-
-        pnRoda.add(pnValor19);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("jLabel1");
@@ -331,27 +113,29 @@ public class ViewRodaRoda extends javax.swing.JPanel implements View{
             .addGroup(containerCentralLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(containerCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnPalavra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnRoda, javax.swing.GroupLayout.PREFERRED_SIZE, 929, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(pnRoda, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnPalavra, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         containerCentralLayout.setVerticalGroup(
             containerCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(containerCentralLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnRoda, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(66, 66, 66)
+                .addComponent(pnRoda, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
                 .addComponent(pnPalavra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
-        mainContainer.add(containerCentral);
+        mainContainer.add(containerCentral, java.awt.BorderLayout.CENTER);
 
         containerSul.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        containerSul.setPreferredSize(new java.awt.Dimension(414, 80));
-        containerSul.setLayout(new java.awt.GridLayout(2, 1));
+        containerSul.setMinimumSize(new java.awt.Dimension(200, 80));
+        containerSul.setPreferredSize(new java.awt.Dimension(800, 100));
+        containerSul.setLayout(new java.awt.BorderLayout());
 
-        pnBotoesAcao.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 25));
+        pnBotoesAcao.setPreferredSize(new java.awt.Dimension(800, 40));
+        pnBotoesAcao.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 10));
 
         btnTentarPalavra.setText("Tentar Palavra");
         btnTentarPalavra.addActionListener(new java.awt.event.ActionListener() {
@@ -372,9 +156,10 @@ public class ViewRodaRoda extends javax.swing.JPanel implements View{
         });
         pnBotoesAcao.add(btnRodar);
 
-        containerSul.add(pnBotoesAcao);
+        containerSul.add(pnBotoesAcao, java.awt.BorderLayout.PAGE_START);
 
-        jPanel23.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 25));
+        pnTxtField.setMinimumSize(new java.awt.Dimension(70, 100));
+        pnTxtField.setPreferredSize(new java.awt.Dimension(800, 40));
 
         txtFldValor.setText("jTextField1");
         txtFldValor.setMinimumSize(new java.awt.Dimension(60, 19));
@@ -384,28 +169,49 @@ public class ViewRodaRoda extends javax.swing.JPanel implements View{
                 txtFldValorActionPerformed(evt);
             }
         });
-        jPanel23.add(txtFldValor);
+        pnTxtField.add(txtFldValor);
 
-        containerSul.add(jPanel23);
+        containerSul.add(pnTxtField, java.awt.BorderLayout.PAGE_END);
 
-        mainContainer.add(containerSul);
+        mainContainer.add(containerSul, java.awt.BorderLayout.SOUTH);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(mainContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mainContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(mainContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 957, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addGap(0, 957, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(mainContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTentarPalavraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTentarPalavraActionPerformed
@@ -420,77 +226,49 @@ public class ViewRodaRoda extends javax.swing.JPanel implements View{
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFldValorActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        this.setSize(900, 700);
+    }//GEN-LAST:event_formComponentShown
+
+    private void setarValores(JSONObject configuracoes) {
+        pnValor.setVisible(false);
+        for (int i = 1; i <= (int) configuracoes.get("numeroJogadores"); i++) {
+            String nome = JOptionPane.showInputDialog("Qual o nome do Jogador " + i);
+            ControllerJogador jogador = new ControllerJogador(controllerRodaRoda);
+            if ("".equals(nome) && nome == null) {
+                nome = "Jogador " + i;
+            }
+            jogador.set("nome", nome);
+            jogador.set("pontos", 0);
+            jogador.atualizarDados();
+            jogadores.add(jogador);
+            ContainerJogador ctJogador = new ContainerJogador(nome);
+            //if(i == 1)
+              //  containerNorte.add(ctJogador);
+            //if(i == 2)
+              //  containerNorte.add(ctJogador);
+            //if(i == 3)
+                containerNorte.add(ctJogador);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRodar;
     private javax.swing.JButton btnTentar;
     private javax.swing.JButton btnTentarPalavra;
     private javax.swing.JPanel containerCentral;
-    private javax.swing.JPanel containerJogador;
     private javax.swing.JPanel containerNorte;
     private javax.swing.JPanel containerSul;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel23;
-    private javax.swing.JLabel lbNome;
-    private javax.swing.JLabel lbPontos;
-    private javax.swing.JLabel lbRoda;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbValor;
-    private javax.swing.JLabel lbValor1;
-    private javax.swing.JLabel lbValor10;
-    private javax.swing.JLabel lbValor11;
-    private javax.swing.JLabel lbValor12;
-    private javax.swing.JLabel lbValor13;
-    private javax.swing.JLabel lbValor14;
-    private javax.swing.JLabel lbValor15;
-    private javax.swing.JLabel lbValor16;
-    private javax.swing.JLabel lbValor17;
-    private javax.swing.JLabel lbValor18;
-    private javax.swing.JLabel lbValor19;
-    private javax.swing.JLabel lbValor2;
-    private javax.swing.JLabel lbValor3;
-    private javax.swing.JLabel lbValor4;
-    private javax.swing.JLabel lbValor5;
-    private javax.swing.JLabel lbValor6;
-    private javax.swing.JLabel lbValor7;
-    private javax.swing.JLabel lbValor8;
-    private javax.swing.JLabel lbValor9;
-    private javax.swing.JLabel lbValueNome;
-    private javax.swing.JLabel lbValuePontos;
-    private javax.swing.JLabel lbValueRoda;
     private javax.swing.JPanel mainContainer;
     private javax.swing.JPanel pnBotoesAcao;
     private javax.swing.JPanel pnPalavra;
     private javax.swing.JPanel pnRoda;
+    private javax.swing.JPanel pnTxtField;
     private javax.swing.JPanel pnValor;
-    private javax.swing.JPanel pnValor1;
-    private javax.swing.JPanel pnValor10;
-    private javax.swing.JPanel pnValor11;
-    private javax.swing.JPanel pnValor12;
-    private javax.swing.JPanel pnValor13;
-    private javax.swing.JPanel pnValor14;
-    private javax.swing.JPanel pnValor15;
-    private javax.swing.JPanel pnValor16;
-    private javax.swing.JPanel pnValor17;
-    private javax.swing.JPanel pnValor18;
-    private javax.swing.JPanel pnValor19;
-    private javax.swing.JPanel pnValor2;
-    private javax.swing.JPanel pnValor3;
-    private javax.swing.JPanel pnValor4;
-    private javax.swing.JPanel pnValor5;
-    private javax.swing.JPanel pnValor6;
-    private javax.swing.JPanel pnValor7;
-    private javax.swing.JPanel pnValor8;
-    private javax.swing.JPanel pnValor9;
     private javax.swing.JTextField txtFldValor;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void setController(ControllerAbstrato controller) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public JSONObject getDados() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

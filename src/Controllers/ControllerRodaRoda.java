@@ -6,7 +6,6 @@
 package Controllers;
 
 import Models.RodaRoda;
-import View.ViewMain;
 import Views.ViewConfiguracao;
 import Views.ViewRodaRoda;
 import java.io.IOException;
@@ -22,9 +21,6 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
     private final RodaRoda rodaroda;
     private final ControllerPalavra controllerPalavra;
     private final ViewRodaRoda viewRodaRoda;
-    private final ViewMain viewMain;
-    private ViewMain viewConfiguracoes;
-    private ViewMain viewInicial;
     private ViewConfiguracao viewConfiguracao;
     private ControllerConfiguracao controllerConfiguracao;
     private ControllerRoda controllerRoda;
@@ -36,21 +32,18 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
         controllerRoda = new ControllerRoda();
         controllerPalavra = new ControllerPalavra();
         viewRodaRoda = new ViewRodaRoda(controllerPalavra,this);
-        viewMain = new ViewMain();
         rodaroda = new RodaRoda();
         utils = new Utils();
         inicializarDados();
     }
     public void ligar() throws IOException {
-        ViewMain viewInicial = viewMain.viewInicial(this);
-        viewInicial.setVisible(true);
-        set("viewInicial",viewInicial);
+        
     }
     
     public void configuracoes() throws IOException {
         if(viewConfiguracao == null){
-        viewConfiguracoes = viewMain.viewConfiguracao(controllerConfiguracao);
-        viewConfiguracoes.setVisible(true);
+        //viewConfiguracoes = viewMain.viewConfiguracao(controllerConfiguracao);
+        //viewConfiguracoes.setVisible(true);
         set("viewConfiguracao",viewConfiguracao);
         }
     }
