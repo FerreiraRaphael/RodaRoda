@@ -67,12 +67,15 @@ public final class ControllerConfiguracao extends Controller implements Controll
         set("numeroEtapas", configuracao.getNumeroEtapas());
         set("numeroPalavras", configuracao.getNumeroPalavras());
         set("numeroJogadores", configuracao.getNumeroJogadores());
+        set("limiteEtapas", limiteNumeroEtapas);
+        set("limitePalavras", limiteNumeroPalavras);
+        set("limiteJogadores", limiteNumeroJogadores);
         set("diferentesCategorias", false);
     }
 
     @Override
     public void carregarDados(JSONObject Dados) {
-        configuracao.setNumeroEtapas((int) Dados.get("numeroEtapas"));
+        configuracao.setNumeroJogadores((int) Dados.get("numeroJogadores"));
         configuracao.setNumeroPalavras((int) Dados.get("numeroPalavras"));
         configuracao.setNumeroEtapas((int) Dados.get("numeroEtapas"));
     }

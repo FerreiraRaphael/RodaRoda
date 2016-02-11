@@ -6,11 +6,11 @@
 package Controllers;
 
 import Models.RodaRoda;
+import View.ViewMain;
 import Views.ViewConfiguracao;
 import Views.ViewRodaRoda;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import org.json.simple.JSONObject;
 import utils.Utils;
 
@@ -22,6 +22,9 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
     private final RodaRoda rodaroda;
     private final ControllerPalavra controllerPalavra;
     private final ViewRodaRoda viewRodaRoda;
+    private final ViewMain viewMain;
+    private ViewMain viewConfiguracoes;
+    private ViewMain viewInicial;
     private ViewConfiguracao viewConfiguracao;
     private ControllerConfiguracao controllerConfiguracao;
     private ControllerRoda controllerRoda;
@@ -29,25 +32,34 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
     private int proximo;
     
     public ControllerRodaRoda(){
+        controllerConfiguracao = new ControllerConfiguracao();
         controllerRoda = new ControllerRoda();
         controllerPalavra = new ControllerPalavra();
         viewRodaRoda = new ViewRodaRoda(controllerPalavra,this);
+        viewMain = new ViewMain();
         rodaroda = new RodaRoda();
         utils = new Utils();
         inicializarDados();
     }
-    public void iniciar() throws IOException {
-        setarConfigurações();
-        setarJogadores();
-        rodarEtapas();
+    public void ligar() throws IOException {
+        ViewMain viewInicial = viewMain.viewInicial(this);
+        viewInicial.setVisible(true);
+        set("viewInicial",viewInicial);
+    }
+    
+    public void configuracoes() throws IOException {
+        if(viewConfiguracao == null){
+        viewConfiguracoes = viewMain.viewConfiguracao(controllerConfiguracao);
+        viewConfiguracoes.setVisible(true);
+        set("viewConfiguracao",viewConfiguracao);
+        }
     }
     
     private void setarConfigurações(){
-        controllerConfiguracao = new ControllerConfiguracao();
-        viewConfiguracao = new ViewConfiguracao(controllerConfiguracao);
-        viewConfiguracao.selecionarNumeroEtapas();
-        viewConfiguracao.selecionarNumeroJogadores();
-        viewConfiguracao.selecionarNumeroPalavras();
+        //viewConfiguracao = new ViewConfiguracao(controllerConfiguracao);
+        //viewConfiguracao.selecionarNumeroEtapas();
+        //viewConfiguracao.selecionarNumeroJogadores();
+        //viewConfiguracao.selecionarNumeroPalavras();
         controllerConfiguracao.atualizarDados();
     }
     private ArrayList<ControllerJogador> setarJogadores(){
@@ -68,7 +80,6 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
     private void rodarEtapas() throws IOException{
         for (int i = 0; i <  (int) controllerConfiguracao.get("numeroEtapas") ; i++) {
             iniciarRodaRoda((ArrayList<ControllerJogador>) get("jogadores"));
-            
         }
     }
     

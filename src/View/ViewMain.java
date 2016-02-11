@@ -5,26 +5,28 @@
  */
 package View;
 
+import Controllers.ControllerConfiguracao;
+import Controllers.ControllerRodaRoda;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 
 /**
  *
  * @author raphael
  */
-public class MainFrame extends javax.swing.JFrame {
+public class ViewMain extends javax.swing.JFrame {
     
     private final Dimension viewInicial = new Dimension(450, 450);
     private final Dimension viewRodaRoda = new Dimension(1000, 450);
-    private CardLayout cards;
-    //private JPanel panelCentral;
+    private final Dimension viewConfiguracao = new Dimension(450, 450);
+    ViewConfiguracoes vwConf;
+    
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public ViewMain() {
         initComponents();
         //this.panelCentral.add("viewInicial", new ViewInicial());
         //this.panelCentral.add("viewRodaRoda", new ViewRodaRoda());
@@ -41,8 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(450, 450));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+        getContentPane().setLayout(new java.awt.CardLayout());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -64,39 +65,53 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                //new MainFrame().setVisible(true);
             }
         });
     }
     
-    public void viewInicial(){
-        for( Component comp : this.getComponents()){
-            
-        }
-        System.out.println(getComponents());
-        setSize(viewInicial);
-        add("viewInicial", new ViewInicial());
-        //cards = (CardLayout) this.panelCentral.getLayout();
-        //cards.show(this.panelCentral, "viewRodaRoda");
-        //this.add(new ViewInicial());
+    public ViewMain viewInicial(ControllerRodaRoda controller){
+        ViewMain janela = new ViewMain();
+        janela.setSize(viewInicial);
+        ViewInicial vwInicial = new ViewInicial();
+        vwInicial.setController(controller);
+        janela.add(vwInicial);
+        return janela;
     }
     
-    public void viewRodaRoda(){
-        setSize(viewRodaRoda);
-        add(new ViewRodaRoda());
+    public ViewMain viewRodaRoda(ControllerRodaRoda controller){
+        ViewMain janela = new ViewMain();
+        janela.setSize(viewRodaRoda);
+        ViewRodaRoda vwRodaRoda = new ViewRodaRoda();
+        vwRodaRoda.setController(controller);
+        janela.add(vwRodaRoda);
+        return janela;
+    }
+    
+    public ViewMain viewConfiguracao(ControllerConfiguracao controller){
+        ViewMain janela = new ViewMain();
+        janela.setSize(viewConfiguracao);
+        if(vwConf == null){
+        vwConf = new ViewConfiguracoes();
+        vwConf.setController(controller);
+        }
+        vwConf.setCombosBoxes();
+        janela.add(vwConf);
+        return janela;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

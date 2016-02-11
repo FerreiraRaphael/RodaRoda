@@ -5,11 +5,14 @@
  */
 package View;
 
+import Controllers.ControllerAbstrato;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author raphael
  */
-public class ViewRodaRoda extends javax.swing.JPanel {
+public class ViewRodaRoda extends javax.swing.JPanel implements View{
 
     /**
      * Creates new form ViewRodaRoda
@@ -480,4 +483,14 @@ public class ViewRodaRoda extends javax.swing.JPanel {
     private javax.swing.JPanel pnValor9;
     private javax.swing.JTextField txtFldValor;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(ControllerAbstrato controller) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public JSONObject getDados() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

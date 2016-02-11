@@ -14,6 +14,12 @@ public final class Configuracao {
     private int numeroJogadores;
     private int numeroPalavras;
     private int numeroEtapas;
+
+    public Configuracao() {
+        this.numeroJogadores = 0;
+        this.numeroPalavras = 0;
+        this.numeroEtapas = 0;
+    }
     
     public void setNumeroJogadores(int numeroJogadores) {
         this.numeroJogadores = numeroJogadores;

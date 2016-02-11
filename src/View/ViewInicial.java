@@ -5,12 +5,20 @@
  */
 package View;
 
+import Controllers.ControllerAbstrato;
+import Controllers.ControllerRodaRoda;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author raphael
  */
-public class ViewInicial extends javax.swing.JPanel {
-
+public class ViewInicial extends javax.swing.JPanel implements View
+{
+    ControllerRodaRoda controller;
     /**
      * Creates new form ViewInicial
      */
@@ -28,95 +36,142 @@ public class ViewInicial extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        pnHeader = new javax.swing.JPanel();
+        lbHeader = new javax.swing.JLabel();
+        pnBotoes = new javax.swing.JPanel();
+        btnIniciar = new javax.swing.JButton();
+        btnConfiguracoes = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(450, 450));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel1.setPreferredSize(new java.awt.Dimension(250, 150));
+        pnHeader.setBorder(new javax.swing.border.MatteBorder(null));
+        pnHeader.setPreferredSize(new java.awt.Dimension(250, 150));
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 3, 48)); // NOI18N
-        jLabel1.setText("Roda a Roda");
-        jLabel1.setAlignmentX(0.5F);
+        lbHeader.setFont(new java.awt.Font("Dialog", 3, 48)); // NOI18N
+        lbHeader.setText("Roda a Roda");
+        lbHeader.setAlignmentX(0.5F);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnHeaderLayout = new javax.swing.GroupLayout(pnHeader);
+        pnHeader.setLayout(pnHeaderLayout);
+        pnHeaderLayout.setHorizontalGroup(
+            pnHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnHeaderLayout.createSequentialGroup()
                 .addGap(48, 48, 48)
-                .addComponent(jLabel1)
+                .addComponent(lbHeader)
                 .addContainerGap(490, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnHeaderLayout.setVerticalGroup(
+            pnHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnHeaderLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(jLabel1)
+                .addComponent(lbHeader)
                 .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        add(jPanel1);
+        add(pnHeader);
 
-        jPanel2.setBorder(new javax.swing.border.MatteBorder(null));
+        pnBotoes.setBorder(new javax.swing.border.MatteBorder(null));
         java.awt.GridBagLayout jPanel2Layout = new java.awt.GridBagLayout();
         jPanel2Layout.columnWidths = new int[] {0};
         jPanel2Layout.rowHeights = new int[] {0, 5, 0, 5, 0};
-        jPanel2.setLayout(jPanel2Layout);
+        pnBotoes.setLayout(jPanel2Layout);
 
-        jButton1.setText("Iniciar");
-        jButton1.setAlignmentX(0.5F);
-        jButton1.setMaximumSize(new java.awt.Dimension(150, 50));
-        jButton1.setMinimumSize(new java.awt.Dimension(150, 50));
-        jButton1.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnIniciar.setText("Iniciar");
+        btnIniciar.setAlignmentX(0.5F);
+        btnIniciar.setMaximumSize(new java.awt.Dimension(150, 50));
+        btnIniciar.setMinimumSize(new java.awt.Dimension(150, 50));
+        btnIniciar.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnIniciar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnIniciarMouseClicked(evt);
+            }
+        });
+        btnIniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weighty = 0.9;
         gridBagConstraints.insets = new java.awt.Insets(17, 127, 4, 155);
-        jPanel2.add(jButton1, gridBagConstraints);
+        pnBotoes.add(btnIniciar, gridBagConstraints);
 
-        jButton2.setText("Configurações");
-        jButton2.setAlignmentX(0.5F);
-        jButton2.setMaximumSize(new java.awt.Dimension(150, 50));
-        jButton2.setMinimumSize(new java.awt.Dimension(150, 50));
-        jButton2.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnConfiguracoes.setText("Configurações");
+        btnConfiguracoes.setAlignmentX(0.5F);
+        btnConfiguracoes.setMaximumSize(new java.awt.Dimension(150, 50));
+        btnConfiguracoes.setMinimumSize(new java.awt.Dimension(150, 50));
+        btnConfiguracoes.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnConfiguracoesMouseClicked(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weighty = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(22, 127, 4, 155);
-        jPanel2.add(jButton2, gridBagConstraints);
+        pnBotoes.add(btnConfiguracoes, gridBagConstraints);
 
-        jButton3.setText("Sair");
-        jButton3.setAlignmentX(0.5F);
-        jButton3.setMaximumSize(new java.awt.Dimension(150, 50));
-        jButton3.setMinimumSize(new java.awt.Dimension(150, 50));
-        jButton3.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnSair.setText("Sair");
+        btnSair.setAlignmentX(0.5F);
+        btnSair.setMaximumSize(new java.awt.Dimension(150, 50));
+        btnSair.setMinimumSize(new java.awt.Dimension(150, 50));
+        btnSair.setPreferredSize(new java.awt.Dimension(150, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(22, 127, 36, 155);
-        jPanel2.add(jButton3, gridBagConstraints);
+        pnBotoes.add(btnSair, gridBagConstraints);
 
-        add(jPanel2);
+        add(pnBotoes);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+        
+    }//GEN-LAST:event_btnIniciarActionPerformed
+
+    private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
+        try {
+            controller.ligar();
+        } catch (IOException ex) {
+            Logger.getLogger(ViewInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnIniciarMouseClicked
+
+    private void btnConfiguracoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfiguracoesMouseClicked
+        try {
+            controller.configuracoes();
+        } catch (IOException ex) {
+            Logger.getLogger(ViewInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnConfiguracoesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton btnConfiguracoes;
+    private javax.swing.JButton btnIniciar;
+    private javax.swing.JButton btnSair;
+    private javax.swing.JLabel lbHeader;
+    private javax.swing.JPanel pnBotoes;
+    private javax.swing.JPanel pnHeader;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(ControllerAbstrato controller) {
+        this.controller = (ControllerRodaRoda) controller;
+    }
+
+    @Override
+    public JSONObject getDados() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+  
 }

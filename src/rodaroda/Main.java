@@ -6,7 +6,6 @@
 package rodaroda;
 
 import Controllers.ControllerRodaRoda;
-import View.MainFrame;
 
 import java.io.IOException;
 
@@ -21,11 +20,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        //ControllerRodaRoda rodaroda = new ControllerRodaRoda();
-        //rodaroda.iniciar();
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.viewInicial();
-        mainFrame.setVisible(true);
-                
+        ControllerRodaRoda rodaroda = new ControllerRodaRoda();
+        rodaroda.ligar();
     }
 }
