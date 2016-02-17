@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  * @author raphael
  */
 public final class ControllerConfiguracao extends Controller implements ControllerAbstrato{
-    private Configuracao configuracao;
+    private final Configuracao configuracao;
     
     private final int limiteNumeroJogadores;
     private final int limiteNumeroPalavras;
@@ -27,7 +27,7 @@ public final class ControllerConfiguracao extends Controller implements Controll
         limiteNumeroEtapas = 7;
         inicializarDados();
     }
-
+    
     public int getLimiteNumeroJogadores() {
         return limiteNumeroJogadores;
     }

@@ -6,24 +6,32 @@
 package View;
 
 import Controllers.ControllerJogador;
-import Controllers.ControllerRoda;
 import Controllers.ControllerRodaRoda;
-import java.awt.BorderLayout;
+import Observer.ControllerRodaRodaEvent;
+import Observer.ControllerRodaRodaListener;
+import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.BoxLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author raphael
  */
-public class ViewRodaRoda extends javax.swing.JFrame {
+public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRodaListener {
 
+    private ArrayList<ContainerJogador> containers;
     private final ViewInicial vwInicial;
-    private final ArrayList<ControllerJogador> jogadores;
     private final ControllerRodaRoda controllerRodaRoda;
-
+    private ControllerJogador jogadorAtual;
+    private int proximo;
 
     /**
      * Creates new form ViewRodaRoda
@@ -31,11 +39,11 @@ public class ViewRodaRoda extends javax.swing.JFrame {
      * @param vwInicial
      * @param configuracoes
      */
-    public ViewRodaRoda(ViewInicial vwInicial, JSONObject configuracoes) {
+    public ViewRodaRoda(ViewInicial vwInicial, JSONObject configuracoes) throws IOException {
+        this.containers = new ArrayList<>();
         initComponents();
         this.vwInicial = vwInicial;
-        jogadores = new ArrayList<>();
-        this.controllerRodaRoda = new ControllerRodaRoda();
+        this.controllerRodaRoda = new ControllerRodaRoda(configuracoes);
         setarValores(configuracoes);
     }
 
@@ -53,20 +61,32 @@ public class ViewRodaRoda extends javax.swing.JFrame {
         containerNorte = new javax.swing.JPanel();
         containerCentral = new javax.swing.JPanel();
         pnRoda = new javax.swing.JPanel();
-        pnValor = new javax.swing.JPanel();
-        lbValor = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        lbPontosNaRoda = new javax.swing.JLabel();
+        pnCategoria = new javax.swing.JPanel();
+        lbCategoria = new javax.swing.JLabel();
+        lbCategoriaValue = new javax.swing.JLabel();
         pnPalavra = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lbPalavraSecreta = new javax.swing.JLabel();
+        pnErros = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        lbError = new javax.swing.JLabel();
+        lbErrosValue = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        lbRestante = new javax.swing.JLabel();
         containerSul = new javax.swing.JPanel();
         pnBotoesAcao = new javax.swing.JPanel();
-        btnTentarPalavra = new javax.swing.JButton();
         btnTentar = new javax.swing.JButton();
         btnRodar = new javax.swing.JButton();
         pnTxtField = new javax.swing.JPanel();
-        txtFldValor = new javax.swing.JTextField();
+        txtFldTentativa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -92,40 +112,64 @@ public class ViewRodaRoda extends javax.swing.JFrame {
         containerCentral.setMaximumSize(new java.awt.Dimension(800, 250));
         containerCentral.setMinimumSize(new java.awt.Dimension(0, 150));
         containerCentral.setPreferredSize(new java.awt.Dimension(800, 200));
+        containerCentral.setLayout(new javax.swing.BoxLayout(containerCentral, javax.swing.BoxLayout.Y_AXIS));
 
-        pnValor.setBackground(new java.awt.Color(255, 255, 255));
-        pnValor.setEnabled(false);
-        pnValor.setPreferredSize(new java.awt.Dimension(70, 30));
+        pnRoda.setLayout(new javax.swing.BoxLayout(pnRoda, javax.swing.BoxLayout.Y_AXIS));
 
-        lbValor.setText("jLabel2");
-        pnValor.add(lbValor);
+        jScrollPane1.setBackground(new java.awt.Color(51, 51, 51));
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(450, 60));
 
-        pnRoda.add(pnValor);
+        jTextPane1.setBackground(new java.awt.Color(51, 51, 51));
+        jTextPane1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextPane1.setEnabled(false);
+        jScrollPane1.setViewportView(jTextPane1);
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setText("jLabel1");
+        pnRoda.add(jScrollPane1);
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(796, 15));
+
+        jLabel25.setText("Pontos na Roda :");
+        jPanel2.add(jLabel25);
+        jPanel2.add(lbPontosNaRoda);
+
+        pnRoda.add(jPanel2);
+
+        containerCentral.add(pnRoda);
+
+        lbCategoria.setText("Categoria: ");
+        pnCategoria.add(lbCategoria);
+        pnCategoria.add(lbCategoriaValue);
+
+        containerCentral.add(pnCategoria);
+
+        jLabel1.setText("Palavra:");
         pnPalavra.add(jLabel1);
 
-        javax.swing.GroupLayout containerCentralLayout = new javax.swing.GroupLayout(containerCentral);
-        containerCentral.setLayout(containerCentralLayout);
-        containerCentralLayout.setHorizontalGroup(
-            containerCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerCentralLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(containerCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnRoda, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnPalavra, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
-        );
-        containerCentralLayout.setVerticalGroup(
-            containerCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerCentralLayout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(pnRoda, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(pnPalavra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
-        );
+        lbPalavraSecreta.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        pnPalavra.add(lbPalavraSecreta);
+
+        containerCentral.add(pnPalavra);
+
+        pnErros.setLayout(new javax.swing.BoxLayout(pnErros, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(100, 15));
+
+        lbError.setText("Erros: ");
+        jPanel3.add(lbError);
+        jPanel3.add(lbErrosValue);
+
+        pnErros.add(jPanel3);
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(796, 15));
+
+        jLabel2.setText("Letras Restantes: ");
+        jPanel4.add(jLabel2);
+        jPanel4.add(lbRestante);
+
+        pnErros.add(jPanel4);
+
+        containerCentral.add(pnErros);
 
         mainContainer.add(containerCentral, java.awt.BorderLayout.CENTER);
 
@@ -137,18 +181,20 @@ public class ViewRodaRoda extends javax.swing.JFrame {
         pnBotoesAcao.setPreferredSize(new java.awt.Dimension(800, 40));
         pnBotoesAcao.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 10));
 
-        btnTentarPalavra.setText("Tentar Palavra");
-        btnTentarPalavra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTentarPalavraActionPerformed(evt);
+        btnTentar.setText("Tentar");
+        btnTentar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTentarMouseClicked(evt);
             }
         });
-        pnBotoesAcao.add(btnTentarPalavra);
-
-        btnTentar.setText("Tentar");
         pnBotoesAcao.add(btnTentar);
 
         btnRodar.setText("Rodar");
+        btnRodar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRodarMouseClicked(evt);
+            }
+        });
         btnRodar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRodarActionPerformed(evt);
@@ -160,16 +206,21 @@ public class ViewRodaRoda extends javax.swing.JFrame {
 
         pnTxtField.setMinimumSize(new java.awt.Dimension(70, 100));
         pnTxtField.setPreferredSize(new java.awt.Dimension(800, 40));
+        pnTxtField.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
 
-        txtFldValor.setText("jTextField1");
-        txtFldValor.setMinimumSize(new java.awt.Dimension(60, 19));
-        txtFldValor.setPreferredSize(new java.awt.Dimension(240, 25));
-        txtFldValor.addActionListener(new java.awt.event.ActionListener() {
+        txtFldTentativa.setMinimumSize(new java.awt.Dimension(60, 19));
+        txtFldTentativa.setPreferredSize(new java.awt.Dimension(240, 25));
+        txtFldTentativa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFldValorActionPerformed(evt);
+                txtFldTentativaActionPerformed(evt);
             }
         });
-        pnTxtField.add(txtFldValor);
+        txtFldTentativa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFldTentativaKeyTyped(evt);
+            }
+        });
+        pnTxtField.add(txtFldTentativa);
 
         containerSul.add(pnTxtField, java.awt.BorderLayout.PAGE_END);
 
@@ -194,81 +245,279 @@ public class ViewRodaRoda extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 957, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTentarPalavraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTentarPalavraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnTentarPalavraActionPerformed
-
     private void btnRodarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRodarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRodarActionPerformed
 
-    private void txtFldValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldValorActionPerformed
+    private void txtFldTentativaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldTentativaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFldValorActionPerformed
+    }//GEN-LAST:event_txtFldTentativaActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         this.setSize(900, 700);
+        this.setLocationRelativeTo(null);
     }//GEN-LAST:event_formComponentShown
 
-    private void setarValores(JSONObject configuracoes) {
-        pnValor.setVisible(false);
+    private void btnRodarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRodarMouseClicked
+        clearConsole();
+        Object[] valor = controllerRodaRoda.rodar();
+        if ((boolean) valor[0]) {
+            lbPontosNaRoda.setText((String) valor[1]);
+            trava(false);
+            console("Você tirou sorte,"
+                    + " tem a change de tentar uma letra ou a palavra inteira,"
+                    + " se acertar ira ganhar " + valor[1] + " pontos");
+        } else {
+            console("Você tirou azar,"
+                    + " perdeu a vez,");
+            if ("1".equals((String) valor[1])) {
+                console("e perdeu todos seus pontos na roda :(");
+                getContainer((String) jogadorAtual.get("nome")).setPontosNaRoda("0");
+            }
+            proximo();
+        }
+    }//GEN-LAST:event_btnRodarMouseClicked
+
+    private void btnTentarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTentarMouseClicked
+        String tentativa = txtFldTentativa.getText();
+        try {
+            verificarTentativa(tentativa);
+        } catch (IOException ex) {
+            Logger.getLogger(ViewRodaRoda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnTentarMouseClicked
+
+    private void txtFldTentativaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFldTentativaKeyTyped
+        
+    }//GEN-LAST:event_txtFldTentativaKeyTyped
+
+    private void setarValores(JSONObject configuracoes) throws IOException {
+        controllerRodaRoda.addListener(this);
         for (int i = 1; i <= (int) configuracoes.get("numeroJogadores"); i++) {
             String nome = JOptionPane.showInputDialog("Qual o nome do Jogador " + i);
-            ControllerJogador jogador = new ControllerJogador(controllerRodaRoda);
-            if ("".equals(nome) && nome == null) {
+            ControllerJogador jogador = new ControllerJogador();
+            if ("".equals(nome) || nome == null) {
                 nome = "Jogador " + i;
             }
             jogador.set("nome", nome);
             jogador.set("pontos", 0);
             jogador.atualizarDados();
-            jogadores.add(jogador);
+            controllerRodaRoda.addJogador(jogador);
             ContainerJogador ctJogador = new ContainerJogador(nome);
-            //if(i == 1)
-              //  containerNorte.add(ctJogador);
-            //if(i == 2)
-              //  containerNorte.add(ctJogador);
-            //if(i == 3)
-                containerNorte.add(ctJogador);
+            containers.add(ctJogador);
+            containerNorte.add(ctJogador);
         }
     }
 
+    private void proximo() {
+        ContainerJogador container;
+        Border border;
+        border = BorderFactory.createLineBorder(Color.GREEN);
+        TitledBorder title;
+        title = BorderFactory.createTitledBorder(border, "Sua Vez");
+        border = BorderFactory.createEmptyBorder();
+        if(jogadorAtual != null){
+            container = getContainer((String) jogadorAtual.get("nome"));
+            container.setBorder(border);
+        }
+        jogadorAtual = controllerRodaRoda.proximo();
+        container = getContainer((String) jogadorAtual.get("nome"));
+        container.setBorder(title);
+        console(" É a vez do jogador " + jogadorAtual.get("nome"));
+    }
+
+    private ContainerJogador getContainer(String nome) {
+        ContainerJogador retorno = null;
+        for (ContainerJogador container : containers) {
+            if (nome.equals(container.getNome())) {
+                retorno = container;
+            }
+        }
+        return retorno;
+    }
+    private boolean verificaLetra(String s){
+        s = s.toLowerCase();
+        boolean erro = !lbErrosValue.getText().contains(s);
+        boolean restante = lbRestante.getText().contains(s);
+        if(!erro)
+            JOptionPane.showMessageDialog(this, "Tente nunca cometer os mesmo erros jovem");
+        else if(!restante)
+            JOptionPane.showMessageDialog(this, "Tente só as letras restantes por favor");
+        return erro && restante;
+    }
+    private void verificarTentativa(String tentativa) throws IOException {
+        tentativa = tentativa.toLowerCase();
+        if (tentativa.equals("")) {
+            JOptionPane.showMessageDialog(this, "Escreva alguma coisa");
+        } else {
+                if (tentativa.length() > 1) {
+                    int resposta;
+                    resposta = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja tentar a palavra ?", "Atenção", 0);
+                    if (resposta == 1) {
+                        controllerRodaRoda.tentar(tentativa, true);
+                    }
+                } else {
+                    if(verificaLetra(tentativa))
+                    controllerRodaRoda.tentar(tentativa, false);
+                }
+        }
+        txtFldTentativa.setText("");
+    }
+
+    private void clearConsole() {
+        jTextPane1.setText("");
+    }
+
+    private void console(String texto) {
+        String corpo = jTextPane1.getText();
+        jTextPane1.setText(corpo + texto);
+    }
+
+    private void trava(boolean lock) {
+        btnRodar.setVisible(lock);
+        btnTentar.setVisible(!lock);
+        txtFldTentativa.setVisible(!lock);
+        if (lock) {
+            lbPontosNaRoda.setText("");
+        }
+        else{
+            txtFldTentativa.requestFocus();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRodar;
     private javax.swing.JButton btnTentar;
-    private javax.swing.JButton btnTentarPalavra;
     private javax.swing.JPanel containerCentral;
     private javax.swing.JPanel containerNorte;
     private javax.swing.JPanel containerSul;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lbValor;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JLabel lbCategoria;
+    private javax.swing.JLabel lbCategoriaValue;
+    private javax.swing.JLabel lbError;
+    private javax.swing.JLabel lbErrosValue;
+    private javax.swing.JLabel lbPalavraSecreta;
+    private javax.swing.JLabel lbPontosNaRoda;
+    private javax.swing.JLabel lbRestante;
     private javax.swing.JPanel mainContainer;
     private javax.swing.JPanel pnBotoesAcao;
+    private javax.swing.JPanel pnCategoria;
+    private javax.swing.JPanel pnErros;
     private javax.swing.JPanel pnPalavra;
     private javax.swing.JPanel pnRoda;
     private javax.swing.JPanel pnTxtField;
-    private javax.swing.JPanel pnValor;
-    private javax.swing.JTextField txtFldValor;
+    private javax.swing.JTextField txtFldTentativa;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void acertou(ControllerRodaRodaEvent evento) {
+        JSONObject dados = evento.getDados();
+        atualizar(dados);
+        clearConsole();
+        int pontos = Integer.parseInt(lbPontosNaRoda.getText());
+        getContainer((String) jogadorAtual.get("nome")).somarPontosNaRoda(pontos);
+        console("Parabêns, você acertou e recebeu " + pontos + " pontos"
+                + ", jogue novamente");
+        trava(true);
+    }
+
+    @Override
+    public void errou(ControllerRodaRodaEvent evento) {
+        JSONObject dados = evento.getDados();
+        atualizar(dados);
+        clearConsole();
+        console("Você errou e não recebeu os pontos");
+        proximo();
+        trava(true);
+    }
+
+    @Override
+    public void gameover(ControllerRodaRodaEvent evento) {
+        JSONObject dados = evento.getDados();
+        String vencedor = (String) dados.get("vencedor");
+        int pontos = (int) dados.get("pontos");
+        JOptionPane.showMessageDialog(this, "O jogador Vencedor é " + vencedor + " com " + pontos + " pontos");
+        trocarJanela(vwInicial);
+    }
+
+    @Override
+    public void acertouPalavra(ControllerRodaRodaEvent evento) {
+        clearConsole();
+        int pontos = getContainer((String) jogadorAtual.get("nome")).getPontosNaRoda();
+        getContainer((String) jogadorAtual.get("nome")).somarPontos();
+        console("Parabêns, você acertou a palavra e recebeu " + pontos + " pontos"
+                + ", jogue novamente");
+        trava(true);
+    }
+
+    @Override
+    public void errouPalavra(ControllerRodaRodaEvent evento) {
+        clearConsole();
+        console("Mais sorte da proxima vez Looser");
+        proximo();
+        trava(true);
+    }
+
+    @Override
+    public void acabouEtapa(ControllerRodaRodaEvent evento) {
+        for (ContainerJogador container : containers) {
+            container.setPontosNaRoda("0");
+        }
+    }
+
+    private void atualizar(JSONObject dados) {
+        if (dados.get("palavra") != null) {
+            String palavra = (String) dados.get("palavra");
+            lbPalavraSecreta.setText(palavra);
+        }
+        if (dados.get("erros") != null) {
+            String erros = (String) dados.get("erros");
+            lbErrosValue.setText(erros);
+        }
+        if (dados.get("restante") != null) {
+            String restante = (String) dados.get("restante");
+            lbRestante.setText(restante);
+        }
+    }
+
+    @Override
+    public void iniciouEtapa(ControllerRodaRodaEvent evento) {
+        JSONObject dados = evento.getDados();
+        lbPalavraSecreta.setText((String) dados.get("palavra"));
+        lbCategoriaValue.setText((String) dados.get("categoria"));
+        lbRestante.setText((String) dados.get("restante"));
+        proximo();
+        trava(true);
+    }
+
+    private void trocarJanela(JFrame janela) {
+        this.setVisible(false);
+        janela.setSize(this.getSize());
+        janela.setLocationRelativeTo(this);
+        janela.setVisible(true);
+    }
 }

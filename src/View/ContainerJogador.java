@@ -17,11 +17,47 @@ public class ContainerJogador extends javax.swing.JPanel {
      */
     public ContainerJogador(String nome) {
         initComponents();
-        lbValueNome.setText(nome);
-        lbValueNome.setText("0");
-        lbValueNome.setText("0");
+        setNome(nome);
+        setPontos("0");
+        setPontosNaRoda("0");
     }
-
+    
+    public String getNome(){
+        return lbValueNome.getText();
+    }
+    
+    public int getPontos(){
+        return Integer.parseInt(lbValuePontos.getText());
+    }
+    
+    public int getPontosNaRoda(){
+        return Integer.parseInt(lbValueRoda.getText());
+    }
+    
+    public void setNome(String nome){
+        lbValueNome.setText(nome);
+    }
+    
+    public void setPontos(String Pontos){
+        lbValuePontos.setText(Pontos);
+    }
+    
+    public void setPontosNaRoda(String pontos){
+        lbValueRoda.setText(pontos);
+    }
+    
+    public void somarPontosNaRoda(int pontos){
+        Integer pontosNaRoda = getPontosNaRoda();
+        pontosNaRoda += pontos;
+        setPontosNaRoda(pontosNaRoda.toString());
+    }
+    
+    public void somarPontos(){
+        Integer pontosDoJogador = getPontos();
+        pontosDoJogador += getPontosNaRoda();
+        setPontos(pontosDoJogador.toString());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,7 +75,8 @@ public class ContainerJogador extends javax.swing.JPanel {
         lbValueRoda = new javax.swing.JLabel();
         lbRoda = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(800, 33));
+        setMaximumSize(new java.awt.Dimension(600, 50));
+        setPreferredSize(new java.awt.Dimension(600, 33));
 
         containerJogador.setBackground(new java.awt.Color(250, 250, 250));
         containerJogador.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -98,7 +135,7 @@ public class ContainerJogador extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGap(0, 796, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)

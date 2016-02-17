@@ -7,7 +7,6 @@ package Models;
 
 import Controllers.ControllerJogador;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

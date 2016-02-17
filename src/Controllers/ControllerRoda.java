@@ -6,6 +6,7 @@
 package Controllers;
 
 
+import Models.Roda;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.simple.JSONObject;
@@ -15,9 +16,9 @@ import utils.Utils;
  *
  * @author raphael
  */
-public class ControllerRoda extends Controller implements ControllerAbstrato {
+public final class ControllerRoda extends Controller implements ControllerAbstrato {
 
-    private final Models.Roda roda;
+    private final Roda roda;
     private final Utils utils;
     //private final List<ControllerJogador> jogadores;
     public ControllerRoda() {

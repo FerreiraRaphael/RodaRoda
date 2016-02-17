@@ -5,11 +5,14 @@
  */
 package Controllers;
 
+import Models.Roda;
 import Models.RodaRoda;
-import Views.ViewConfiguracao;
-import Views.ViewRodaRoda;
+import Observer.ControllerRodaRodaEvent;
+import Observer.ControllerRodaRodaListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 import utils.Utils;
 
@@ -17,117 +20,203 @@ import utils.Utils;
  *
  * @author raphael
  */
-public final class ControllerRodaRoda extends Controller implements ControllerAbstrato{
+public final class ControllerRodaRoda extends Controller implements ControllerAbstrato {
+
+    private ArrayList<ControllerRodaRodaListener> listeners;
     private final RodaRoda rodaroda;
+    private final Roda roda;
     private final ControllerPalavra controllerPalavra;
-    private final ViewRodaRoda viewRodaRoda;
-    private ViewConfiguracao viewConfiguracao;
-    private ControllerConfiguracao controllerConfiguracao;
-    private ControllerRoda controllerRoda;
+    private final ControllerRoda controllerRoda;
     private final Utils utils;
-    private int proximo;
-    
-    public ControllerRodaRoda(){
-        controllerConfiguracao = new ControllerConfiguracao();
+    private int atual;
+    private final JSONObject configuracoes;
+    private int numeroEtapas;
+    private ArrayList<ControllerJogador> jogadores;
+    private StringBuilder letrasRestantes;
+
+    public ControllerRodaRoda(JSONObject configuracoes) {
         controllerRoda = new ControllerRoda();
-        controllerPalavra = new ControllerPalavra();
-        viewRodaRoda = new ViewRodaRoda(controllerPalavra,this);
         rodaroda = new RodaRoda();
+        roda = new Roda();
         utils = new Utils();
         inicializarDados();
+        this.configuracoes = configuracoes;
+        numeroEtapas = (int) configuracoes.get("numeroEtapas");
+        controllerPalavra = new ControllerPalavra((int) configuracoes.get("numeroPalavras"), true);
+        jogadores = new ArrayList<>();
+        listeners = new ArrayList<>();
     }
-    public void ligar() throws IOException {
-        
+
+    public ControllerJogador proximo() {
+        atual++;
+        if (atual >= jogadores.size() - 1) {
+            atual = 0;
+        }
+
+        return jogadores.get(atual);
     }
-    
-    public void configuracoes() throws IOException {
-        if(viewConfiguracao == null){
-        //viewConfiguracoes = viewMain.viewConfiguracao(controllerConfiguracao);
-        //viewConfiguracoes.setVisible(true);
-        set("viewConfiguracao",viewConfiguracao);
+
+    public void tentar(String tentativa, boolean palavra) throws IOException {
+        if (jogadores.get(atual).fazerTentativa(controllerPalavra, tentativa, palavra)) {
+            if (controllerPalavra.verificarPalavraSecreta()) {
+                jogadorAcertouPalavra();
+            } else {
+                retirarLetra(tentativa);
+                jogadorAcertou();
+            }
+        } else if (palavra) {
+            jogadorErrouPalavra();
+        } else {
+            retirarLetra(tentativa);
+            jogadorErrou();
         }
     }
-    
-    private void setarConfigurações(){
-        //viewConfiguracao = new ViewConfiguracao(controllerConfiguracao);
-        //viewConfiguracao.selecionarNumeroEtapas();
-        //viewConfiguracao.selecionarNumeroJogadores();
-        //viewConfiguracao.selecionarNumeroPalavras();
-        controllerConfiguracao.atualizarDados();
-    }
-    private ArrayList<ControllerJogador> setarJogadores(){
-        ArrayList<ControllerJogador> jogadores = new ArrayList<>();
-        for (int i = 0; i < (int) controllerConfiguracao.get("numeroJogadores"); i++) {
-            ControllerJogador jogador = new ControllerJogador(this);
-            jogador.set("nome", viewRodaRoda.adicionarJogador());
-            jogador.set("pontos", 0);
-            jogador.atualizarDados();
-            jogadores.add(jogador);
-            set(jogador,0);
-        }
-        set("jogadores",jogadores);
-        viewRodaRoda.setJogadores(jogadores);
-        return jogadores;
-    }
-    
-    private void rodarEtapas() throws IOException{
-        for (int i = 0; i <  (int) controllerConfiguracao.get("numeroEtapas") ; i++) {
-            iniciarRodaRoda((ArrayList<ControllerJogador>) get("jogadores"));
+
+    public void addJogador(ControllerJogador jogador) {
+        jogadores.add(jogador);
+        if (jogadores.size() == (int) configuracoes.get("numeroJogadores")) {
+            iniciarEtapa();
         }
     }
-    
-    public ControllerJogador proximo(){
-        ArrayList<ControllerJogador> jogadores = (ArrayList<ControllerJogador>) get("jogadores");
-        jogadores.get(proximo).atualizarDados();
-        proximo++;
-        if( proximo >= jogadores.size() - 1 )
-            proximo = 0;
-        
-        return jogadores.get(proximo);
-    } 
-    
-    private boolean jogar(ControllerJogador jogador){
-        Object[] valor = controllerRoda.rodar(jogador);
-        int pontosNaRoda = (int) get(jogador);
-        set("valor", valor);
-        if ((boolean) valor[0]) {
-            if(jogador.fazerTentativa(controllerPalavra)){
-                set(jogador, pontosNaRoda + (int) valor[1]);
-                return true;
-                }
-        } else if (valor[1].equals(1)) {
-            set(jogador, 0);
-        }
-        return false;
+
+    public void addListener(ControllerRodaRodaListener listener) {
+        listeners.add(listener);
     }
-    
-    private void iniciarRodaRoda(ArrayList<Controllers.ControllerJogador> jogadores) throws IOException{
-        ControllerJogador jogador;
-        boolean continuar;
-        continuar = true;
-        proximo = utils.aleatorio(0, jogadores.size()-1);
-        jogador = jogadores.get(proximo);
-        controllerPalavra.escolherPalavras(controllerConfiguracao);
-        while(continuar){
-            viewRodaRoda.telaInicial();
-            if(!jogar(jogador))
-                jogador = proximo();
-            continuar = !controllerPalavra.verificarPalavraSecreta();
+
+    public void removeListener(ControllerRodaRodaListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void jogadorAcertou() throws IOException {
+        JSONObject dados = new JSONObject();
+        dados.put("palavra", controllerPalavra.getPalavra());
+        dados.put("restante", letrasRestantes.toString());
+        for (ControllerRodaRodaListener listener : listeners) {
+            listener.acertou(new ControllerRodaRodaEvent(this, dados));
         }
     }
-    
+
+    private void jogadorErrou() {
+        JSONObject dados = new JSONObject();
+        dados.put("erros", controllerPalavra.getErros());
+        dados.put("restante", letrasRestantes.toString());
+        for (ControllerRodaRodaListener listener : listeners) {
+            listener.errou(new ControllerRodaRodaEvent(this, dados));
+        }
+    }
+
+    private void jogadorAcertouPalavra() throws IOException {
+        finalizarEtapa();
+        for (ControllerRodaRodaListener listener : listeners) {
+            listener.acertouPalavra(new ControllerRodaRodaEvent(this));
+        }
+        finalizarEtapa();
+    }
+
+    private void jogadorErrouPalavra() {
+        for (ControllerRodaRodaListener listener : listeners) {
+            listener.errouPalavra(new ControllerRodaRodaEvent(this));
+        }
+    }
+
+    private void gameOver() {
+        JSONObject dados = new JSONObject();
+        dados.put("vencedor",verificarVencedor());
+        for (ControllerRodaRodaListener listener : listeners) {
+            listener.gameover(new ControllerRodaRodaEvent(this));
+        }
+    }
+
+    private void iniciarEtapa() {
+        letrasRestantes = new StringBuilder("a b c d e f g h i j k l m n o p q r t s v u x w y z ç");
+        JSONObject dados = new JSONObject();
+        try {
+            dados.put("categoria", controllerPalavra.getCategoria());
+            dados.put("palavra", controllerPalavra.getPalavra());
+            dados.put("restante", letrasRestantes.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerRodaRoda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (ControllerRodaRodaListener listener : listeners) {
+            listener.iniciouEtapa(new ControllerRodaRodaEvent(this, dados));
+        }
+    }
+
+    private void retirarLetra(String s) {
+        int indice = letrasRestantes.indexOf(s);
+        letrasRestantes.deleteCharAt(indice);
+        if (indice > 0) {
+            letrasRestantes.deleteCharAt(indice - 1);
+        }
+    }
+
+    private void finalizarEtapa() {
+        JSONObject dados = new JSONObject();
+        numeroEtapas--;
+        if (numeroEtapas == 0) {
+            gameOver();
+        } else {
+            iniciarEtapa();
+        }
+    }
+
+    public Object[] rodar() {
+        ArrayList<Object[]> valores = (ArrayList<Object[]>) get("roda");
+        Object[] valor = valores.get(utils.aleatorio(0, valores.size() - 1));
+        //naRoda = Integer.parseInt((String) valor[1]);
+        return valor;
+    }
+
     @Override
     public void inicializarDados() {
-        set("jogadores", rodaroda.getJogadores());
+        ArrayList<Object[]> valores = new ArrayList<>();
+        valores.add(new Object[]{false, "0"});
+        valores.add(new Object[]{false, "0"});
+        valores.add(new Object[]{false, "1"});
+        valores.add(new Object[]{false, "1"});
+        valores.add(new Object[]{true, "100"});
+        valores.add(new Object[]{true, "100"});
+        valores.add(new Object[]{true, "100"});
+        valores.add(new Object[]{true, "100"});
+        valores.add(new Object[]{true, "200"});
+        valores.add(new Object[]{true, "200"});
+        valores.add(new Object[]{true, "200"});
+        valores.add(new Object[]{true, "200"});
+        valores.add(new Object[]{true, "400"});
+        valores.add(new Object[]{true, "400"});
+        valores.add(new Object[]{true, "400"});
+        valores.add(new Object[]{true, "400"});
+        valores.add(new Object[]{true, "500"});
+        valores.add(new Object[]{true, "500"});
+        valores.add(new Object[]{true, "1000"});
+        valores.add(new Object[]{true, "1000"});
+        set("roda", valores);
+        set("valor", "");
+        //for(ControllerJogador jogador : jogadores){
+        //   set(jogador, 0);
+        //}
     }
 
     @Override
     public void carregarDados(JSONObject Dados) {
-        rodaroda.setJogadores((ArrayList<ControllerJogador>) Dados.get("jogadores"));
+        roda.setRoda((ArrayList<Object[]>) Dados.get("roda"));
     }
 
     @Override
     public void atualizarDados() {
         carregarDados(getJSON());
     }
+
+    private ControllerJogador verificarVencedor() {
+        ControllerJogador vencedor = null;
+        for (ControllerJogador jogador : jogadores) {
+            if(vencedor == null)
+                vencedor = jogador;
+            else
+                if((int)vencedor.get("pontos")<(int)jogador.get("pontos"))
+                    vencedor = jogador;
+        }
+        return vencedor;
+    }
+
 }

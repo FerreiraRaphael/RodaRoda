@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import Models.Palavra;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
@@ -16,7 +17,7 @@ import utils.Arquivo;
  */
 public final class ControllerPalavra extends Controller implements ControllerAbstrato {
 
-    private final Models.Palavra palavra;
+    private final Palavra palavra;
     private final Arquivo arquivo;
     private StringBuilder palavraSecreta;
     private ArrayList<String> palavras;
@@ -25,25 +26,47 @@ public final class ControllerPalavra extends Controller implements ControllerAbs
     private String categoriaSelecionada;
     private String palavraSelecionada;
     private String erros;
-
-    public ControllerPalavra() {
+    private final int numeroPalavras;
+    private final boolean diferentesCategorias;
+    
+    public ControllerPalavra(int numeroPalavras, boolean diferentesCategorias) {
         palavras = new ArrayList<>();
         arquivo = new Arquivo();
         palavra = new Models.Palavra();
         inicializarDados();
+        this.diferentesCategorias = diferentesCategorias;
+        this.numeroPalavras = numeroPalavras;
+        palavraSelecionada = null;
+        categoriaSelecionada = null;
+        palavraSecreta = null;
     }
-
-    public void escolherPalavras(ControllerConfiguracao controllerConfiguracao) throws IOException {
+    
+    public String getCategoria() throws IOException{
+        if(categoriaSelecionada == null)
+            escolherPalavras();
+        return categoriaSelecionada;
+    }
+    
+    public String getPalavra() throws IOException{
+        if(palavraSecreta == null)
+            escolherPalavras();
+        return palavraSecreta.toString();
+    }
+    
+    public String getErros(){
+        return erros;
+    }
+    
+    private void escolherPalavras() throws IOException {
         arquivo.escolherArquivo("/Categorias");
         palavras = arquivo.lerArquivo(arquivo.getFile());
         categoriasSelecionadas = new ArrayList<>();
         palavrasSelecionadas = new ArrayList<>();
-        int numeroPalavras = (int) controllerConfiguracao.get("numeroPalavras");
         if (numeroPalavras == 1) {
             palavrasSelecionadas.add(palavras.get(arquivo.aleatorio(0, this.palavras.size())).toLowerCase());
             categoriasSelecionadas.add(arquivo.getName());
         } else {
-            setarPalavras(numeroPalavras, (boolean) controllerConfiguracao.get("diferentesCategorias"));
+            setarPalavras(numeroPalavras, diferentesCategorias);
         }
         categoriaSelecionada = arquivo.unirString(categoriasSelecionadas);
         palavraSelecionada = arquivo.unirString(palavrasSelecionadas);

@@ -5,7 +5,8 @@
  */
 package Controllers;
 
-import Views.ViewRodaRoda;
+import Models.Jogador;
+import java.util.ArrayList;
 import org.json.simple.JSONObject;
 
 /**
@@ -13,25 +14,22 @@ import org.json.simple.JSONObject;
  * @author raphael
  */
 public final class ControllerJogador extends Controller implements ControllerAbstrato {
-
+    
     private final Models.Jogador jogador;
-    private final ControllerRodaRoda controllerRodaRoda;
 
-    public ControllerJogador(ControllerRodaRoda controllerRodaRoda) {
-        this.controllerRodaRoda = controllerRodaRoda;
-        this.jogador = new Models.Jogador();
+    public ControllerJogador() {
+        this.jogador = new Jogador();
         inicializarDados();
     }
 
-    public boolean fazerTentativa(ControllerPalavra controllerPalavra) {
-        ViewRodaRoda view = new ViewRodaRoda(controllerPalavra);
-        String tentativa = view.escreverTentativa();
+    public boolean fazerTentativa(ControllerPalavra controllerPalavra, String tentativa, boolean tentarPalavra) {
         boolean acertou = false;
-        if (tentativa.length() == 1) {
+        if (!tentarPalavra) {
            if (controllerPalavra.compararLetra(tentativa.charAt(0))) {
                 acertou = true;
             }
-        } else if (controllerPalavra.compararPalavra(tentativa)) {
+        } 
+        else if (controllerPalavra.compararPalavra(tentativa)) {
             acertou = true;
         }
         return acertou;

@@ -5,6 +5,9 @@
  */
 package View;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
@@ -149,7 +152,11 @@ public class ViewInicial extends javax.swing.JFrame {
 
     private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
         if(json.get("numeroJogadores")!=null && json.get("numeroEtapas")!=null && json.get("numeroPalavras")!=null && json.get("erro") == null){
-            vwRodaRoda = new ViewRodaRoda(this, json);
+            try {
+                vwRodaRoda = new ViewRodaRoda(this, json);
+            } catch (IOException ex) {
+                Logger.getLogger(ViewInicial.class.getName()).log(Level.SEVERE, null, ex);
+            }
             trocarJanela(vwRodaRoda);
         }
         else{
