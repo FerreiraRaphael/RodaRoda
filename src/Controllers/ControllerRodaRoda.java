@@ -126,7 +126,7 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
         JSONObject dados = new JSONObject();
         dados.put("vencedor",verificarVencedor());
         for (ControllerRodaRodaListener listener : listeners) {
-            listener.gameover(new ControllerRodaRodaEvent(this));
+            listener.gameover(new ControllerRodaRodaEvent(this,dados));
         }
     }
 
@@ -212,11 +212,12 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
 
     private ControllerJogador verificarVencedor() {
         ControllerJogador vencedor = null;
+        
         for (ControllerJogador jogador : jogadores) {
             if(vencedor == null)
                 vencedor = jogador;
             else
-                if((int)vencedor.get("pontos")<(int)jogador.get("pontos"))
+                if((Integer)vencedor.get("pontos")<(Integer)jogador.get("pontos"))
                     vencedor = jogador;
         }
         return vencedor;

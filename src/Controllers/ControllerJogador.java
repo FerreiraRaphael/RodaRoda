@@ -23,37 +23,39 @@ public final class ControllerJogador extends Controller implements ControllerAbs
     }
 
     public boolean fazerTentativa(ControllerPalavra controllerPalavra, String tentativa, boolean tentarPalavra) {
-        boolean acertou = false;
-        if (!tentarPalavra) {
-           if (controllerPalavra.compararLetra(tentativa.charAt(0))) {
-                acertou = true;
-            }
-        } 
-        else if (controllerPalavra.compararPalavra(tentativa)) {
-            acertou = true;
-        }
-        return acertou;
+        if (!tentarPalavra) 
+            return controllerPalavra.compararLetra(tentativa.charAt(0));
+        else 
+            return controllerPalavra.compararPalavra(tentativa);
     }
 
-    public void somarPontos(int pontos) {
+    public void somarPontos() {
+        int pontos = jogador.getPontos() + jogador.getPontosNaRoda();
+        set("pontos", pontos);
+    }
+    
+    public void somarPontosNaRoda(int pontos){
         if (pontos > 0) {
             pontos += (int) get("pontos");
         } else {
             pontos = 0;
         }
-        set("pontos", pontos);
+        set("pontosNaRoda", pontos);
     }
+    
 
     @Override
     public void inicializarDados() {
         set("nome", jogador.getNome());
         set("pontos", jogador.getPontos());
+        set("pontos", jogador.getPontosNaRoda());
     }
 
     @Override
     public void carregarDados(JSONObject Dados) {
         jogador.setNome((String) Dados.get("nome"));
         jogador.setPontos((int) Dados.get("pontos"));
+        jogador.setPontosNaRoda((int) Dados.get("pontosNaRoda"));
     }
 
     @Override
