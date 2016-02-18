@@ -45,11 +45,14 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
         controllerPalavra = new ControllerPalavra((int) configuracoes.get("numeroPalavras"), true);
         jogadores = new ArrayList<>();
         listeners = new ArrayList<>();
+        atual = -1;
     }
 
     public ControllerJogador proximo() {
+        if(atual == -1)
+            atual = utils.aleatorio(0, jogadores.size());
         atual++;
-        if (atual >= jogadores.size() - 1) {
+        if (atual >= jogadores.size()) {
             atual = 0;
         }
 

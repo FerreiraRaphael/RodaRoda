@@ -304,7 +304,7 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
     }//GEN-LAST:event_btnTentarMouseClicked
 
     private void txtFldTentativaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFldTentativaKeyTyped
-        
+
     }//GEN-LAST:event_txtFldTentativaKeyTyped
 
     private void setarValores(JSONObject configuracoes) throws IOException {
@@ -332,50 +332,54 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         TitledBorder title;
         title = BorderFactory.createTitledBorder(border, "Sua Vez");
         border = BorderFactory.createEmptyBorder();
-        if(jogadorAtual != null){
+        if (jogadorAtual != null) {
             container = getContainer((String) jogadorAtual.get("nome"));
             container.setBorder(border);
         }
         jogadorAtual = controllerRodaRoda.proximo();
         container = getContainer((String) jogadorAtual.get("nome"));
-        container.setBorder(title);
+        try {
+            container.setBorder(title);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         console(" É a vez do jogador " + jogadorAtual.get("nome"));
     }
 
     private ContainerJogador getContainer(String nome) {
         ContainerJogador retorno = null;
-        for (ContainerJogador container : containers) {
-            if (nome.equals(container.getNome())) {
-                retorno = container;
+        for(int i = 0; i < containers.size(); i++){
+            if (nome.equals(containers.get(i).getNome())) {
+                retorno = containers.get(i);
             }
         }
         return retorno;
     }
-    private boolean verificaLetra(String s){
+
+    private boolean verificaLetra(String s) {
         s = s.toLowerCase();
         boolean erro = !lbErrosValue.getText().contains(s);
         boolean restante = lbRestante.getText().contains(s);
-        if(!erro)
+        if (!erro) {
             JOptionPane.showMessageDialog(this, "Tente nunca cometer os mesmo erros jovem");
-        else if(!restante)
+        } else if (!restante) {
             JOptionPane.showMessageDialog(this, "Tente só as letras restantes por favor");
+        }
         return erro && restante;
     }
+
     private void verificarTentativa(String tentativa) throws IOException {
         tentativa = tentativa.toLowerCase();
         if (tentativa.equals("")) {
             JOptionPane.showMessageDialog(this, "Escreva alguma coisa");
-        } else {
-                if (tentativa.length() > 1) {
-                    int resposta;
-                    resposta = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja tentar a palavra ?", "Atenção", 0);
-                    if (resposta == 1) {
-                        controllerRodaRoda.tentar(tentativa, true);
-                    }
-                } else {
-                    if(verificaLetra(tentativa))
-                    controllerRodaRoda.tentar(tentativa, false);
-                }
+        } else if (tentativa.length() > 1) {
+            int resposta;
+            resposta = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja tentar a palavra ?", "Atenção", 0);
+            if (resposta == 1) {
+                controllerRodaRoda.tentar(tentativa, true);
+            }
+        } else if (verificaLetra(tentativa)) {
+            controllerRodaRoda.tentar(tentativa, false);
         }
         txtFldTentativa.setText("");
     }
@@ -395,8 +399,7 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         txtFldTentativa.setVisible(!lock);
         if (lock) {
             lbPontosNaRoda.setText("");
-        }
-        else{
+        } else {
             txtFldTentativa.requestFocus();
         }
     }
