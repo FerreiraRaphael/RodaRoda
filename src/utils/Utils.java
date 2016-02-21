@@ -7,12 +7,18 @@ package utils;
 
 import java.util.ArrayList;
 
-/**
+/** Esta classe serve como apoio aos ArraysLists.
  *
  * @author raphael
  */
 public class Utils {
     public String separador = " | ";
+    /** Este método irá realizar um processo para escolher um número aleatório.
+     * 
+     * @param min int - O mínimo
+     * @param max int - O máximo
+     * @return int - Retornará um valor inteiro.
+     */
     public int aleatorio(int min, int max) {
         int range;
         range = (max - min) + 1;

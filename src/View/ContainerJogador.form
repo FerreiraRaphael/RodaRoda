@@ -81,7 +81,7 @@
                           <Component id="lbValuePontos" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="513" max="32767" attributes="0"/>
+                  <EmptySpace pref="588" max="32767" attributes="0"/>
                   <Component id="lbRoda" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lbValueRoda" min="-2" max="-2" attributes="0"/>
@@ -103,7 +103,7 @@
                       <Component id="lbPontos" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbValuePontos" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
