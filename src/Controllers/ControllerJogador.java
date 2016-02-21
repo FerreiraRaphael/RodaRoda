@@ -13,11 +13,12 @@ import View.ContainerJogador;
  * @author raphael
  */
 public final class ControllerJogador {
-    private final Models.Jogador jogador;
+    private final Jogador jogador;
     private final ContainerJogador container;
     public String nome;
     public int erros;
     public int numeroRodadas; 
+    
    public ControllerJogador(String nome, ContainerJogador ctJogador) {
         this.erros = 0;
         this.jogador = new Jogador();

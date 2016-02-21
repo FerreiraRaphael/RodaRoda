@@ -7,8 +7,6 @@ package rodaroda;
 
 import View.ViewInicial;
 
-import java.io.IOException;
-
 
 /**
  *
@@ -19,9 +17,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-        //ControllerRodaRoda rodaroda = new ControllerRodaRoda();
-        //rodaroda.ligar();
+    public static void main(String[] args) {
         ViewInicial vwInicial = new ViewInicial();
         vwInicial.setLocationRelativeTo(null);
         vwInicial.setVisible(true);

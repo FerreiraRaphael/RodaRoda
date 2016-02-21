@@ -17,9 +17,9 @@ public class Jogador {
     private String nome;
 
     public Jogador() {
-        nome = "";
-        pontos = 0;
-        pontosNaRoda = 0;
+        this.nome = "";
+        this.pontos = 0;
+        this.pontosNaRoda = 0;
     }
     
     public String getNome() {

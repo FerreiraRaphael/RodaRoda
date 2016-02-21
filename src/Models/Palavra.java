@@ -33,7 +33,7 @@ public class Palavra {
     }
 
     public Palavra() {
-        categoriaSelecionada = "";
-        palavraSelecionada = "";
+        this.categoriaSelecionada = "";
+        this.palavraSelecionada = "";
     }
 }

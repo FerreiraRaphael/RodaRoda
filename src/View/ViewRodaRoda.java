@@ -96,11 +96,6 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         txtFldTentativa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
-            }
-        });
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
@@ -206,11 +201,6 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
                 btnRodarMouseClicked(evt);
             }
         });
-        btnRodar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRodarActionPerformed(evt);
-            }
-        });
         pnBotoesAcao.add(btnRodar);
 
         containerSul.add(pnBotoesAcao, java.awt.BorderLayout.PAGE_START);
@@ -221,16 +211,6 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
 
         txtFldTentativa.setMinimumSize(new java.awt.Dimension(60, 19));
         txtFldTentativa.setPreferredSize(new java.awt.Dimension(240, 25));
-        txtFldTentativa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFldTentativaActionPerformed(evt);
-            }
-        });
-        txtFldTentativa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFldTentativaKeyTyped(evt);
-            }
-        });
         pnTxtField.add(txtFldTentativa);
 
         containerSul.add(pnTxtField, java.awt.BorderLayout.PAGE_END);
@@ -272,19 +252,6 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRodarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRodarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRodarActionPerformed
-
-    private void txtFldTentativaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldTentativaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFldTentativaActionPerformed
-
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        this.setSize(900, 700);
-        this.setLocationRelativeTo(null);
-    }//GEN-LAST:event_formComponentShown
-
     private void btnRodarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRodarMouseClicked
         clearConsole();
         Object[] valor = controllerRodaRoda.rodar(jogadorAtual);
@@ -315,10 +282,6 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
             Logger.getLogger(ViewRodaRoda.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTentarMouseClicked
-
-    private void txtFldTentativaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFldTentativaKeyTyped
-
-    }//GEN-LAST:event_txtFldTentativaKeyTyped
 
     private void setarValores() throws IOException {
         controllerRodaRoda.addListener(this);
@@ -483,14 +446,6 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         
     }
 
-    /*
-    @Override
-    public void acabouEtapa(RodaRodaEvent evento) {
-        for (ContainerJogador container : containers) {
-            container.setPontosNaRoda("0");
-        }
-    }
-     */
     private void atualizar(JSONObject dados) {
         if (dados.get("palavra") != null) {
             String palavra = (String) dados.get("palavra");

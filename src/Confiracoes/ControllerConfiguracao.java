@@ -4,24 +4,25 @@
  * and open the template in the editor.
  */
 package Confiracoes;
+
 /**
  *
  * @author raphael
  */
-public final class ControllerConfiguracao{
+public final class ControllerConfiguracao {
+
     private final Configuracao configuracao;
-    
     private final int limiteNumeroJogadores;
     private final int limiteNumeroPalavras;
     private final int limiteNumeroEtapas;
-    
+
     public ControllerConfiguracao() {
-        configuracao = Configuracao.getInstance();
-        limiteNumeroJogadores = 3;
-        limiteNumeroPalavras = 3;
-        limiteNumeroEtapas = 7;
+        this.configuracao = Configuracao.getInstance();
+        this.limiteNumeroJogadores = 3;
+        this.limiteNumeroPalavras = 3;
+        this.limiteNumeroEtapas = 7;
     }
-    
+
     public int getLimiteNumeroJogadores() {
         return limiteNumeroJogadores;
     }
@@ -33,28 +34,19 @@ public final class ControllerConfiguracao{
     public int getLimiteNumeroEtapas() {
         return limiteNumeroEtapas;
     }
-    
-    public boolean setNumeroJogadores(int numero) {
-        if (numero >= 1 && numero <= limiteNumeroJogadores) {
-            configuracao.setNumeroJogadores(numero);
-            return true;
-        } else 
-            return false;
+
+    public void setNumeroJogadores(int numero) {
+        configuracao.setNumeroJogadores(numero);
     }
-    public boolean setNumeroPalavras(int numero) {
-        if (numero >= 1 && numero <= limiteNumeroPalavras) {
-            configuracao.setNumeroPalavras(numero);
-            return true;
-        } else 
-            return false;
+
+    public void setNumeroPalavras(int numero) {
+        configuracao.setNumeroPalavras(numero);
     }
-    public boolean setNumeroEtapas(int numero) {
-        if (numero >= 1 && numero <= limiteNumeroEtapas) {
-            configuracao.setNumeroEtapas(numero);
-            return true;
-        } else 
-            return false;
+
+    public void setNumeroEtapas(int numero) {
+        configuracao.setNumeroEtapas(numero);
     }
+
     public void setDiferentesCategorias(boolean check) {
         configuracao.setDiferentesEtapas(check);
     }

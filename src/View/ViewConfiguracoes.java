@@ -59,11 +59,6 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(450, 450));
-        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentHidden(java.awt.event.ComponentEvent evt) {
-                jPanel1formComponentHidden(evt);
-            }
-        });
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         pnHeader.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 50));
@@ -81,16 +76,6 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         pnNumeroJogadores.add(lbNumeroJogadores);
 
         cbNumeroJogadores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione Número Jogador" }));
-        cbNumeroJogadores.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                cbNumeroJogadoresComponentShown(evt);
-            }
-        });
-        cbNumeroJogadores.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbNumeroJogadoresActionPerformed(evt);
-            }
-        });
         pnNumeroJogadores.add(cbNumeroJogadores);
 
         pnCentral.add(pnNumeroJogadores);
@@ -99,11 +84,6 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         pnNumeroEtapas.add(lbNumeroEtapas);
 
         cbNumeroEtapas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione Número Etapas" }));
-        cbNumeroEtapas.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                cbNumeroEtapasComponentShown(evt);
-            }
-        });
         pnNumeroEtapas.add(cbNumeroEtapas);
 
         pnCentral.add(pnNumeroEtapas);
@@ -112,27 +92,12 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         pnNumeroPalavras.add(lbNumeroPalavras);
 
         cbNumeroPalavras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione Número Palavras" }));
-        cbNumeroPalavras.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                cbNumeroPalavrasComponentShown(evt);
-            }
-        });
         pnNumeroPalavras.add(cbNumeroPalavras);
 
         pnCentral.add(pnNumeroPalavras);
 
         chbDiferentesCategorias.setSelected(true);
         chbDiferentesCategorias.setText("Diferentes Categorias");
-        chbDiferentesCategorias.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chbDiferentesCategoriasStateChanged(evt);
-            }
-        });
-        chbDiferentesCategorias.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                chbDiferentesCategoriasMouseClicked(evt);
-            }
-        });
         pnDiferentesCategorias.add(chbDiferentesCategorias);
 
         pnCentral.add(pnDiferentesCategorias);
@@ -181,22 +146,6 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbNumeroJogadoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_cbNumeroJogadoresComponentShown
-
-    }//GEN-LAST:event_cbNumeroJogadoresComponentShown
-
-    private void cbNumeroJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNumeroJogadoresActionPerformed
-
-    }//GEN-LAST:event_cbNumeroJogadoresActionPerformed
-
-    private void cbNumeroEtapasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_cbNumeroEtapasComponentShown
-     
-    }//GEN-LAST:event_cbNumeroEtapasComponentShown
-
-    private void cbNumeroPalavrasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_cbNumeroPalavrasComponentShown
-       
-    }//GEN-LAST:event_cbNumeroPalavrasComponentShown
-
     private void btnSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseClicked
         
         if(!verificarDados()){
@@ -211,18 +160,6 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
     private void btnFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFecharMouseClicked
         trocarJanela(vwInicial);
     }//GEN-LAST:event_btnFecharMouseClicked
-
-    private void jPanel1formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1formComponentHidden
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel1formComponentHidden
-
-    private void chbDiferentesCategoriasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chbDiferentesCategoriasStateChanged
-        
-    }//GEN-LAST:event_chbDiferentesCategoriasStateChanged
-
-    private void chbDiferentesCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chbDiferentesCategoriasMouseClicked
-        controllerConfiguracao.setDiferentesCategorias(chbDiferentesCategorias.isSelected());
-    }//GEN-LAST:event_chbDiferentesCategoriasMouseClicked
     
     private boolean verificarDados() {
         if (cbNumeroEtapas.getSelectedItem().toString().contains("Selecione")) 

@@ -82,11 +82,6 @@ public class ViewInicial extends javax.swing.JFrame {
                 btnIniciarMouseClicked(evt);
             }
         });
-        btnIniciar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIniciarActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnIniciar);
 
         pnBotoes.add(jPanel2);
@@ -160,10 +155,6 @@ public class ViewInicial extends javax.swing.JFrame {
             trocarJanela(vwConf);
         }
     }//GEN-LAST:event_btnIniciarMouseClicked
-
-    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-
-    }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void btnConfiguracoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfiguracoesMouseClicked
         trocarJanela(vwConf);

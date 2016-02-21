@@ -17,30 +17,28 @@ import utils.Arquivo;
  */
 public final class ControllerPalavra {
 
+    private final ArrayList<PalavraListener> listeners;
+    private final boolean diferentesCategorias;
+    private final int numeroPalavras;
     private final Palavra palavra;
     private final Arquivo arquivo;
-    private StringBuilder palavraSecreta;
-    private ArrayList<String> palavras;
     private ArrayList<String> categoriasSelecionadas;
     private ArrayList<String> palavrasSelecionadas;
-    private ArrayList<PalavraListener> listeners;
     private StringBuilder letrasRestantes;
+    private StringBuilder palavraSecreta;
     private String categoriaSelecionada;
     private String palavraSelecionada;
     private String erros;
-    private final int numeroPalavras;
-    private final boolean diferentesCategorias;
 
     public ControllerPalavra(int numeroPalavras, boolean diferentesCategorias) {
-        palavras = new ArrayList<>();
-        listeners = new ArrayList<>();
-        arquivo = new Arquivo();
-        palavra = new Models.Palavra();
+        this.listeners = new ArrayList<>();
+        this.arquivo = new Arquivo();
+        this.palavra = new Palavra();
         this.diferentesCategorias = diferentesCategorias;
         this.numeroPalavras = numeroPalavras;
-        palavraSelecionada = null;
-        categoriaSelecionada = null;
-        palavraSecreta = null;
+        this.palavraSelecionada = null;
+        this.categoriaSelecionada = null;
+        this.palavraSecreta = null;
     }
 
     public void addListener(PalavraListener listener) {
@@ -77,20 +75,13 @@ public final class ControllerPalavra {
     }
 
     private void escolherPalavras() throws IOException {
-        arquivo.escolherArquivo("/Categorias");
-        palavras = arquivo.lerArquivo(arquivo.getFile());
         categoriasSelecionadas = new ArrayList<>();
         palavrasSelecionadas = new ArrayList<>();
-        if (numeroPalavras == 1) {
-            palavrasSelecionadas.add(palavras.get(arquivo.aleatorio(0, this.palavras.size())).toLowerCase());
-            categoriasSelecionadas.add(arquivo.getName());
-        } else {
-            setarPalavras(numeroPalavras, diferentesCategorias);
-        }
+        setarPalavras();
         categoriaSelecionada = arquivo.unirString(categoriasSelecionadas);
         palavraSelecionada = arquivo.unirString(palavrasSelecionadas);
-        letrasRestantes = new StringBuilder("a b c d e f g h i j k l m n o p q r t s v u x w y z ç");
         setarPalavraSecreta();
+        letrasRestantes = new StringBuilder("a b c d e f g h i j k l m n o p q r t s v u x w y z ç");
         erros = "";
         palavra.setCategoriaSelecionada(categoriaSelecionada);
         palavra.setPalavraSelecionada(palavraSelecionada);
@@ -110,29 +101,35 @@ public final class ControllerPalavra {
 
     private String selecionarPalavra() throws IOException {
         arquivo.escolherArquivo("/Categorias");
-        palavras = arquivo.lerArquivo(arquivo.getFile());
-        String selecionada = palavras.get(arquivo.aleatorio(0, this.palavras.size() - 1)).toLowerCase();
+        ArrayList<String> palavras = arquivo.lerArquivo(arquivo.getFile());
+        String selecionada = palavras.get(arquivo.aleatorio(0, palavras.size() - 1)).toLowerCase();
         return selecionada;
     }
 
-    private void setarPalavras(int numeroPalavras, boolean diferentesCategorias) throws IOException {
-        String selecionada;
-        selecionada = selecionarPalavra();
-        if (diferentesCategorias) {
-            for (int i = 0; i < numeroPalavras; i++) {
-                while (palavrasSelecionadas.contains(selecionada)) {
-                    selecionada = selecionarPalavra();
-                }
-                palavrasSelecionadas.add(selecionada);
-                categoriasSelecionadas.add(arquivo.getName());
-            }
-        } else {
+    private void setarPalavras() throws IOException {
+        if (numeroPalavras == 1) {
+            palavrasSelecionadas.add(selecionarPalavra());
             categoriasSelecionadas.add(arquivo.getName());
-            for (int i = 0; i < numeroPalavras; i++) {
-                while (palavrasSelecionadas.contains(selecionada)) {
-                    selecionada = palavras.get(arquivo.aleatorio(0, this.palavras.size() - 1)).toLowerCase();
+        } else {
+            String selecionada;
+            selecionada = selecionarPalavra();
+            if (diferentesCategorias) {
+                for (int i = 0; i < numeroPalavras; i++) {
+                    while (palavrasSelecionadas.contains(selecionada)) {
+                        selecionada = selecionarPalavra();
+                    }
+                    palavrasSelecionadas.add(selecionada);
+                    categoriasSelecionadas.add(arquivo.getName());
                 }
-                palavrasSelecionadas.add(selecionada);
+            } else {
+                ArrayList<String> palavras = arquivo.lerArquivo(arquivo.getFile());
+                categoriasSelecionadas.add(arquivo.getName());
+                for (int i = 0; i < numeroPalavras; i++) {
+                    while (palavrasSelecionadas.contains(selecionada)) {
+                        selecionada = palavras.get(arquivo.aleatorio(0, palavras.size() - 1)).toLowerCase();
+                    }
+                    palavrasSelecionadas.add(selecionada);
+                }
             }
         }
     }
@@ -181,12 +178,13 @@ public final class ControllerPalavra {
             return false;
         }
     }
-    private String tratarTentativa(String tentativa){
+
+    private String tratarTentativa(String tentativa) {
         StringBuilder tent = new StringBuilder(tentativa);
         int fromIndex = 0;
-        while(fromIndex != -1){
+        while (fromIndex != -1) {
             fromIndex = palavraSelecionada.indexOf(arquivo.separador, fromIndex);
-            if(fromIndex != -1){
+            if (fromIndex != -1) {
                 tent.deleteCharAt(fromIndex);
                 tent.insert(fromIndex, arquivo.separador);
                 fromIndex += arquivo.separador.length();
@@ -194,6 +192,7 @@ public final class ControllerPalavra {
         }
         return tent.toString();
     }
+
     public void verificarPalavraSecreta() {
         if (palavraSecreta.toString().toLowerCase().equals(palavraSelecionada.toLowerCase())) {
             palavraDescoberta();

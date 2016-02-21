@@ -22,21 +22,21 @@ import Observer.RodaListener;
  * @author raphael
  */
 public final class ControllerRodaRoda extends PalavraAdapter{
-
-    private final ArrayList<RodaListener> listeners;
+    
     private final ArrayList<ControllerJogador> jogadores;
-    private final Roda roda;
-    public final ControllerPalavra controllerPalavra;
+    private final ArrayList<RodaListener> listeners;
     private final Utils utils;
-    private int atual;
+    private final Roda roda;
     private Configuracao configuracao;
     private int numeroEtapas;
+    private int atual;
+    public final ControllerPalavra controllerPalavra;
     
     public ControllerRodaRoda() {
         this.configuracao = Configuracao.getInstance();
         this.controllerPalavra = new ControllerPalavra(
-                configuracao.getNumeroPalavras(),
-                configuracao.isDiferentesEtapas());
+                this.configuracao.getNumeroPalavras(),
+                this.configuracao.isDiferentesEtapas());
         this.roda = new Roda();
         this.utils = new Utils();
         this.numeroEtapas = configuracao.getNumeroEtapas();
