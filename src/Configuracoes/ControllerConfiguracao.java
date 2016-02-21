@@ -50,21 +50,24 @@ public final class ControllerConfiguracao {
      * @param numero int - Valor que irá modificar.
      */
     public void setNumeroJogadores(int numero) {
-        configuracao.setNumeroJogadores(numero);
+        if(numero <= getLimiteNumeroJogadores())
+            configuracao.setNumeroJogadores(numero);
     }
     /** Este método modificará o número de palavras.
      * 
      * @param numero int - Valor que irá modificar.
      */
     public void setNumeroPalavras(int numero) {
-        configuracao.setNumeroPalavras(numero);
+        if(numero <= getLimiteNumeroPalavras())
+            configuracao.setNumeroPalavras(numero);
     }
     /** Este método modificará o número de Etapas.
      * 
      * @param numero int - Valor que irá modificar.
      */
     public void setNumeroEtapas(int numero) {
-        configuracao.setNumeroEtapas(numero);
+        if(numero <= getLimiteNumeroEtapas())
+            configuracao.setNumeroEtapas(numero);
     }
     /** Este método modificará o número de Diferentes Categorias.
      * 

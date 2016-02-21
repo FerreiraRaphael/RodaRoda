@@ -31,12 +31,6 @@ public class Arquivo extends Utils {
         file = file.listFiles()[aleatorio(0, file.list().length - 1)];
     }
     
-    public String[] listarArquivos(String caminho) {
-        caminho = System.getProperty("user.dir") + caminho;
-        file = new File(caminho);
-        return file.list();
-    }
-    
     public ArrayList lerArquivo(File file) throws IOException {
         ArrayList lista = new ArrayList();
         try {
