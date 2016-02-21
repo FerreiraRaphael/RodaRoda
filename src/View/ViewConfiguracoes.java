@@ -178,7 +178,7 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         controllerConfiguracao.setDiferentesCategorias(chbDiferentesCategorias.isSelected());
     }
     
-    public void setCombosBoxes() {
+    private void setCombosBoxes() {
         for (Integer i = 1; i <= controllerConfiguracao.getLimiteNumeroJogadores(); i++) {
             cbNumeroJogadores.addItem(i.toString());
         }

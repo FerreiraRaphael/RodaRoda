@@ -136,7 +136,6 @@ public final class ControllerPalavra {
 
     public boolean compararLetra(char c) {
         String palavra = palavraSelecionada;
-        ArrayList<Integer> indices = new ArrayList<>();
         boolean acertou = false;
         if (palavra.indexOf(c) != -1) {
             int fromIndex = 0;

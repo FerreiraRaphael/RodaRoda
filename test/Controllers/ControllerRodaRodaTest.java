@@ -5,38 +5,19 @@
  */
 package Controllers;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
+import View.ContainerJogador;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import Observer.RodaListener;
 
 /**
  *
  * @author raphael
  */
 public class ControllerRodaRodaTest {
-    
-    public ControllerRodaRodaTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of verificarErros method, of class ControllerRodaRoda.
@@ -44,108 +25,64 @@ public class ControllerRodaRodaTest {
     @Test
     public void testVerificarErros() {
         System.out.println("verificarErros");
-        ControllerJogador jogador = null;
-        boolean errouPalavra = false;
-        ControllerRodaRoda instance = null;
-        boolean expResult = false;
+        ControllerJogador jogador = new ControllerJogador("teste",
+                new ContainerJogador());
+        jogador.erros = new Random().nextInt(3);
+        boolean errouPalavra = new Random().nextBoolean();
+        ControllerRodaRoda instance = new ControllerRodaRoda();
         boolean result = instance.verificarErros(jogador, errouPalavra);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if (jogador.erros >= 3 || errouPalavra) {
+            assertTrue(result);
+        } else {
+            assertFalse(result);
+        }
     }
 
     /**
      * Test of proximo method, of class ControllerRodaRoda.
      */
     @Test
-    public void testProximo() {
+    public void testProximo() throws IOException {
         System.out.println("proximo");
-        ControllerRodaRoda instance = null;
-        ControllerJogador expResult = null;
-        ControllerJogador result = instance.proximo();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        ControllerRodaRoda instance = new ControllerRodaRoda();
+        ArrayList<ControllerJogador> jogadores = new ArrayList<>();
+        int numeroJogadores = new Random().nextInt(2);
+        for (int i = 0; i <= numeroJogadores; i++) {
+            ControllerJogador jogador = new ControllerJogador("teste",
+                    new ContainerJogador());
+            jogadores.add(jogador);
+            instance.addJogador(jogador);
+        }
+        boolean achou = false;
+        for (int i = 0; i <= jogadores.size(); i++) {
+            ControllerJogador jogador = instance.proximo();
+            if (jogadores.contains(jogador)) {
+                achou = true;
+            } else {
+                achou = false;
+            }
+        }
+        assertTrue(achou);
     }
-
-    /**
-     * Test of tentar method, of class ControllerRodaRoda.
-     */
-    @Test
-    public void testTentar() throws Exception {
-        System.out.println("tentar");
-        String tentativa = "";
-        boolean palavra = false;
-        ControllerRodaRoda instance = null;
-        instance.tentar(tentativa, palavra);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of addJogador method, of class ControllerRodaRoda.
-     */
-    @Test
-    public void testAddJogador() throws Exception {
-        System.out.println("addJogador");
-        ControllerJogador jogador = null;
-        ControllerRodaRoda instance = null;
-        instance.addJogador(jogador);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of addListener method, of class ControllerRodaRoda.
-     */
-    @Test
-    public void testAddListener() {
-        System.out.println("addListener");
-        RodaListener listener = null;
-        ControllerRodaRoda instance = null;
-        instance.addListener(listener);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of removeListener method, of class ControllerRodaRoda.
-     */
-    @Test
-    public void testRemoveListener() {
-        System.out.println("removeListener");
-        RodaListener listener = null;
-        ControllerRodaRoda instance = null;
-        instance.removeListener(listener);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+    
     /**
      * Test of rodar method, of class ControllerRodaRoda.
      */
     @Test
     public void testRodar() {
         System.out.println("rodar");
-        ControllerJogador jogador = null;
-        ControllerRodaRoda instance = null;
+        ControllerJogador jogador = new ControllerJogador("teste"
+                , new ContainerJogador());
+        jogador.numeroRodadas = new Random().nextInt(3);
+        ControllerRodaRoda instance = new ControllerRodaRoda();
         Object[] expResult = null;
         Object[] result = instance.rodar(jogador);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Integer resultado = new Integer((int) result[1]);
+        if(jogador.numeroRodadas != 2)
+            assertEquals(0, resultado, 1000);
+        else{
+            assertFalse((boolean) result[0]);
+            assertEquals(0, resultado.intValue());
+            }
     }
-
-    /**
-     * Test of palavraDescoberta method, of class ControllerRodaRoda.
-     */
-    @Test
-    public void testPalavraDescoberta() {
-        System.out.println("palavraDescoberta");
-        ControllerRodaRoda instance = null;
-        instance.palavraDescoberta();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }

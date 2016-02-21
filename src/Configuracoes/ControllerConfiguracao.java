@@ -36,15 +36,18 @@ public final class ControllerConfiguracao {
     }
 
     public void setNumeroJogadores(int numero) {
-        configuracao.setNumeroJogadores(numero);
+        if(numero <= getLimiteNumeroJogadores())
+            configuracao.setNumeroJogadores(numero);
     }
 
     public void setNumeroPalavras(int numero) {
-        configuracao.setNumeroPalavras(numero);
+        if(numero <= getLimiteNumeroPalavras())
+            configuracao.setNumeroPalavras(numero);
     }
 
     public void setNumeroEtapas(int numero) {
-        configuracao.setNumeroEtapas(numero);
+        if(numero <= getLimiteNumeroEtapas())
+            configuracao.setNumeroEtapas(numero);
     }
 
     public void setDiferentesCategorias(boolean check) {

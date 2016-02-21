@@ -40,7 +40,19 @@ public class ContainerJogador extends javax.swing.JPanel implements JogadorListe
     private void setPontosNaRoda(String pontos){
         lbValueRoda.setText(pontos);
     }
-  
+    
+    public String getNome(){
+        return lbValueNome.getText();
+    }
+    
+    public String getPontos(){
+        return lbValuePontos.getText();
+    }
+    
+    public String getPontosNaRoda(){
+        return lbValueRoda.getText();
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.

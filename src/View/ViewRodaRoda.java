@@ -54,7 +54,23 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         this.jogadorAtual = null;
         setarValores();
     }
-
+    
+    public String getErros(){
+        return lbErrosValue.getText();
+    }
+    
+    public String getPalavra(){
+        return lbPalavraSecreta.getText();
+    }
+    
+    public String getLetrasRestantes(){
+        return lbRestante.getText();
+    }
+    
+    public String getCategoria(){
+        return lbCategoriaValue.getText();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

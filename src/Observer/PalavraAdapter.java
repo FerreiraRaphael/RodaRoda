@@ -9,7 +9,7 @@ package Observer;
  *
  * @author raphael
  */
-public class PalavraAdapter implements PalavraListener
+public abstract class PalavraAdapter implements PalavraListener
 {
 
     @Override
