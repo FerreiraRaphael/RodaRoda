@@ -12,7 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-/**
+/** Esta classe é para o objeto ContainerJogador. Sendo ele parte do Padrão de Projetos Observer como um listener de um objeto ControllerJogador.
  *
  * @author raphael
  */
@@ -20,7 +20,7 @@ public class ContainerJogador extends javax.swing.JPanel implements JogadorListe
     private ControllerJogador meuJogador;
     private final Border vazia;
     private final TitledBorder borda;
-    /**
+    /** Construtor que criará uma instancia de ContainerJogador.
      * Creates new form ContainerJogador
      */
     public ContainerJogador() {
@@ -28,15 +28,24 @@ public class ContainerJogador extends javax.swing.JPanel implements JogadorListe
         borda = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN), "Sua Vez");
         vazia = BorderFactory.createEmptyBorder();
     }
-    
+    /** Este método irá modificar o nome para que possa aparecer na interface gráfica desta classe.
+     * 
+     * @param nome String - Esta é a palavra que será utilizada para poder alterar o nome da interface.
+     */
     private void setNome(String nome){
         lbValueNome.setText(nome);
     }
-    
+    /** Este método irá modificar os pontos contidos na interface gráfica desta classe.
+     * 
+     * @param Pontos String - Valor que será utilizado para modificar os pontos.
+     */
     private void setPontos(String Pontos){
         lbValuePontos.setText(Pontos);
     }
-    
+    /** Este método irá modificar os pontos na Roda(Pontos por Étapa) da interface gráfica.
+     * 
+     * @param pontos String - Valor que será utilizado para se realizar as modificações.
+     */
     private void setPontosNaRoda(String pontos){
         lbValueRoda.setText(pontos);
     }
@@ -147,7 +156,11 @@ public class ContainerJogador extends javax.swing.JPanel implements JogadorListe
     private javax.swing.JLabel lbValuePontos;
     private javax.swing.JLabel lbValueRoda;
     // End of variables declaration//GEN-END:variables
-    
+
+    /** Este método serve para passar os dados do jogador para sua interface. Ou seja, o ContainerJogador como um Listenner de ControllerJogador irá pegar as informações do Source do Observer para demonstrá-los em sua interface gráfica.
+     * 
+     * @param jogador ControllerJogador - Esta é o Source que está sendo passado como parâmetro para passar as informações que seu Listener preicsa.
+     */
     @Override
     public void jogadorCriado(ControllerJogador jogador) {
         setNome(jogador.nome);
@@ -155,18 +168,26 @@ public class ContainerJogador extends javax.swing.JPanel implements JogadorListe
         setPontosNaRoda("0");
         meuJogador = jogador;
     }
-
+    /** Este método servirá para ouvir o Source e buscar informações sobre os Pontos Gerais e os Pontos na roda(pontos por Étapa).
+     * 
+     * @param pontos int - Será utilizado para passar os Pontos Gerais.
+     * @param pontosNaRoda - Será utilizado para passar os pontos na Roda(pontos por Étapa).
+     */
     @Override
     public void jogadorSomouPontos(int pontos, int pontosNaRoda) {
         setPontos(Integer.toString(pontos));
         setPontosNaRoda(Integer.toString(pontosNaRoda));
     }
-
+    /** Este método irá tirar a borda da interface gráfica desta classe.
+     * 
+     */
     @Override
     public void jogadorPassouVez() {
         this.setBorder(vazia);
     }
-
+    /** Este método irá colocar a borda da interface gráfica desta classe.
+     * 
+     */
     @Override
     public void vezDoJogador() {
         this.setBorder(borda);
