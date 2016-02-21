@@ -5,12 +5,12 @@
  */
 package View;
 
+import Confiracoes.Configuracao;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -20,20 +20,10 @@ public class ViewInicial extends javax.swing.JFrame {
 
     private ViewRodaRoda vwRodaRoda;
     private final ViewConfiguracoes vwConf;
-    private JSONObject json;
-
-    public JSONObject getJson() {
-        return json;
-    }
-
-    public void setJson(JSONObject json) {
-        this.json = json;
-    }
     /**
      * Creates new form ViewFrame
      */
     public ViewInicial() {
-        this.json = new JSONObject();
         initComponents();
         //vwRodaRoda = new ViewRodaRoda(this);
         vwConf = new ViewConfiguracoes(this);
@@ -124,6 +114,11 @@ public class ViewInicial extends javax.swing.JFrame {
         btnSair.setMaximumSize(new java.awt.Dimension(150, 50));
         btnSair.setMinimumSize(new java.awt.Dimension(150, 50));
         btnSair.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSairMouseClicked(evt);
+            }
+        });
         jPanel4.add(btnSair);
 
         pnBotoes.add(jPanel4);
@@ -151,9 +146,10 @@ public class ViewInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
-        if(json.get("numeroJogadores")!=null && json.get("numeroEtapas")!=null && json.get("numeroPalavras")!=null && json.get("erro") == null){
+        Configuracao configuracoes = Configuracao.getInstance();
+        if(configuracoes.getNumeroJogadores() != 0 && configuracoes.getNumeroEtapas() != 0 && configuracoes.getNumeroPalavras() != 0){
             try {
-                vwRodaRoda = new ViewRodaRoda(this, json);
+                vwRodaRoda = new ViewRodaRoda(this);
             } catch (IOException ex) {
                 Logger.getLogger(ViewInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -172,6 +168,10 @@ public class ViewInicial extends javax.swing.JFrame {
     private void btnConfiguracoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfiguracoesMouseClicked
         trocarJanela(vwConf);
     }//GEN-LAST:event_btnConfiguracoesMouseClicked
+
+    private void btnSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSairMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_btnSairMouseClicked
     
     private void trocarJanela(JFrame janela){
         this.setVisible(false);

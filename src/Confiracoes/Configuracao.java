@@ -3,37 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models;
+package Confiracoes;
 
 /**
  *
  * @author raphael
  */
-public final class Configuracao {
+public class Configuracao {
 
     private int numeroJogadores;
     private int numeroPalavras;
     private int numeroEtapas;
-
-    public Configuracao() {
+    private boolean diferentesEtapas;
+    private static Configuracao me = null;
+    
+    private Configuracao() {
         this.numeroJogadores = 0;
         this.numeroPalavras = 0;
         this.numeroEtapas = 0;
+        this.diferentesEtapas = true;
     }
     
-    public void setNumeroJogadores(int numeroJogadores) {
+    public static Configuracao getInstance(){
+        if(me == null)
+            me = new Configuracao();
+        return me;
+    }
+    
+    protected void setDiferentesEtapas(boolean diferentesEtapas) {
+        this.diferentesEtapas = diferentesEtapas;
+    }
+    
+    protected void setNumeroJogadores(int numeroJogadores) {
         this.numeroJogadores = numeroJogadores;
     }
 
-    public void setNumeroPalavras(int numeroPalavras) {
+    protected void setNumeroPalavras(int numeroPalavras) {
         this.numeroPalavras = numeroPalavras;
     }
 
-    public void setNumeroEtapas(int numeroEtapas) {
+    protected void setNumeroEtapas(int numeroEtapas) {
         this.numeroEtapas = numeroEtapas;
     }
 
-    public Object getNumeroJogadores() {
+    public int getNumeroJogadores() {
         return numeroJogadores;
     }
 
@@ -44,4 +57,9 @@ public final class Configuracao {
     public int getNumeroEtapas() {
         return numeroEtapas;
     }
+
+    public boolean isDiferentesEtapas() {
+        return diferentesEtapas;
+    }
+
 }

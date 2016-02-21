@@ -175,6 +175,9 @@
                       <Dimension value="[150, 50]"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSairMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

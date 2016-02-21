@@ -5,210 +5,139 @@
  */
 package Controllers;
 
+import Confiracoes.Configuracao;
 import Models.Roda;
-import Models.RodaRoda;
-import Observer.ControllerRodaRodaEvent;
-import Observer.ControllerRodaRodaListener;
+import Observer.PalavraAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
+import utils.Utils;
+import Strategy.RodarAleatorio;
+import Strategy.RodarViciado;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.JSONObject;
-import utils.Utils;
+import Observer.RodaListener;
 
 /**
  *
  * @author raphael
  */
-public final class ControllerRodaRoda extends Controller implements ControllerAbstrato {
+public final class ControllerRodaRoda extends PalavraAdapter{
 
-    private ArrayList<ControllerRodaRodaListener> listeners;
-    private final RodaRoda rodaroda;
+    private final ArrayList<RodaListener> listeners;
+    private final ArrayList<ControllerJogador> jogadores;
     private final Roda roda;
-    private final ControllerPalavra controllerPalavra;
-    private final ControllerRoda controllerRoda;
+    public final ControllerPalavra controllerPalavra;
     private final Utils utils;
     private int atual;
-    private final JSONObject configuracoes;
+    private Configuracao configuracao;
     private int numeroEtapas;
-    private ArrayList<ControllerJogador> jogadores;
-    private StringBuilder letrasRestantes;
-
-    public ControllerRodaRoda(JSONObject configuracoes) {
-        controllerRoda = new ControllerRoda();
-        rodaroda = new RodaRoda();
-        roda = new Roda();
-        utils = new Utils();
-        inicializarDados();
-        this.configuracoes = configuracoes;
-        numeroEtapas = (int) configuracoes.get("numeroEtapas");
-        controllerPalavra = new ControllerPalavra((int) configuracoes.get("numeroPalavras"), true);
-        jogadores = new ArrayList<>();
-        listeners = new ArrayList<>();
-        atual = -1;
+    
+    public ControllerRodaRoda() {
+        this.configuracao = Configuracao.getInstance();
+        this.controllerPalavra = new ControllerPalavra(
+                configuracao.getNumeroPalavras(),
+                configuracao.isDiferentesEtapas());
+        this.roda = new Roda();
+        this.utils = new Utils();
+        this.numeroEtapas = configuracao.getNumeroEtapas();
+        this.jogadores = new ArrayList<>();
+        this.listeners = new ArrayList<>();
+        this.atual = -1;
     }
-
+    
+    public boolean verificarErros(ControllerJogador jogador, boolean errouPalavra){
+        boolean perdeu = false;
+        if(errouPalavra){
+            gameOver(false);
+            perdeu = true;
+        }
+        if(jogador.erros >= 3){
+            gameOver(false);
+            perdeu = true;
+        }
+        return perdeu;
+        
+    }
+    
     public ControllerJogador proximo() {
-        if(atual == -1)
-            atual = utils.aleatorio(0, jogadores.size());
+        ControllerJogador proximo;
+        if(atual == -1){
+            atual = utils.aleatorio(0, jogadores.size()-1);
+            jogadores.get(atual).minhaVez();
+            return jogadores.get(atual);
+        }
+        jogadores.get(atual).passeiVez();
         atual++;
         if (atual >= jogadores.size()) {
             atual = 0;
         }
-
+        jogadores.get(atual).minhaVez();
         return jogadores.get(atual);
     }
 
     public void tentar(String tentativa, boolean palavra) throws IOException {
-        if (jogadores.get(atual).fazerTentativa(controllerPalavra, tentativa, palavra)) {
-            if (controllerPalavra.verificarPalavraSecreta()) {
-                jogadorAcertouPalavra();
-            } else {
-                retirarLetra(tentativa);
-                jogadorAcertou();
-            }
-        } else if (palavra) {
-            jogadorErrouPalavra();
-        } else {
-            retirarLetra(tentativa);
-            jogadorErrou();
-        }
+        if(!palavra)
+            controllerPalavra.compararLetra(tentativa.charAt(0));
+        else
+            controllerPalavra.compararPalavra(tentativa);
     }
 
-    public void addJogador(ControllerJogador jogador) {
+    public void addJogador(ControllerJogador jogador) throws IOException {
         jogadores.add(jogador);
-        if (jogadores.size() == (int) configuracoes.get("numeroJogadores")) {
+        if (jogadores.size() == configuracao.getNumeroJogadores()) {
             iniciarEtapa();
         }
     }
 
-    public void addListener(ControllerRodaRodaListener listener) {
+    public void addListener(RodaListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(ControllerRodaRodaListener listener) {
+    public void removeListener(RodaListener listener) {
         listeners.remove(listener);
     }
 
-    private void jogadorAcertou() throws IOException {
-        JSONObject dados = new JSONObject();
-        dados.put("palavra", controllerPalavra.getPalavra());
-        dados.put("restante", letrasRestantes.toString());
-        for (ControllerRodaRodaListener listener : listeners) {
-            listener.acertou(new ControllerRodaRodaEvent(this, dados));
+    private void gameOver(boolean vencedor) {
+        if(vencedor)
+            listeners.forEach((listener) -> {
+                listener.gameover(verificarVencedor());
+            });
+        else
+            listeners.forEach((listener) -> {
+                listener.gameover(null);
+            });
+    }
+
+    private void iniciarEtapa() throws IOException {
+        for(ControllerJogador jogador : jogadores){
+            jogador.numeroRodadas = 0;
+        }
+        for (RodaListener listener : listeners) {
+            listener.iniciouEtapa(controllerPalavra.getPalavra(),controllerPalavra.getCategoria(),controllerPalavra.getLetrasRestantes().toString());
         }
     }
 
-    private void jogadorErrou() {
-        JSONObject dados = new JSONObject();
-        dados.put("erros", controllerPalavra.getErros());
-        dados.put("restante", letrasRestantes.toString());
-        for (ControllerRodaRodaListener listener : listeners) {
-            listener.errou(new ControllerRodaRodaEvent(this, dados));
-        }
-    }
-
-    private void jogadorAcertouPalavra() throws IOException {
-        finalizarEtapa();
-        for (ControllerRodaRodaListener listener : listeners) {
-            listener.acertouPalavra(new ControllerRodaRodaEvent(this));
-        }
-        finalizarEtapa();
-    }
-
-    private void jogadorErrouPalavra() {
-        for (ControllerRodaRodaListener listener : listeners) {
-            listener.errouPalavra(new ControllerRodaRodaEvent(this));
-        }
-    }
-
-    private void gameOver() {
-        JSONObject dados = new JSONObject();
-        dados.put("vencedor",verificarVencedor());
-        for (ControllerRodaRodaListener listener : listeners) {
-            listener.gameover(new ControllerRodaRodaEvent(this,dados));
-        }
-    }
-
-    private void iniciarEtapa() {
-        letrasRestantes = new StringBuilder("a b c d e f g h i j k l m n o p q r t s v u x w y z ç");
-        JSONObject dados = new JSONObject();
-        try {
-            dados.put("categoria", controllerPalavra.getCategoria());
-            dados.put("palavra", controllerPalavra.getPalavra());
-            dados.put("restante", letrasRestantes.toString());
-        } catch (IOException ex) {
-            Logger.getLogger(ControllerRodaRoda.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (ControllerRodaRodaListener listener : listeners) {
-            listener.iniciouEtapa(new ControllerRodaRodaEvent(this, dados));
-        }
-    }
-
-    private void retirarLetra(String s) {
-        int indice = letrasRestantes.indexOf(s);
-        letrasRestantes.deleteCharAt(indice);
-        if (indice > 0) {
-            letrasRestantes.deleteCharAt(indice - 1);
-        }
-    }
-
-    private void finalizarEtapa() {
-        JSONObject dados = new JSONObject();
+    private void finalizarEtapa() throws IOException {
         numeroEtapas--;
         if (numeroEtapas == 0) {
-            gameOver();
+            gameOver(true);
         } else {
             iniciarEtapa();
         }
     }
-
-    public Object[] rodar() {
-        ArrayList<Object[]> valores = (ArrayList<Object[]>) get("roda");
-        Object[] valor = valores.get(utils.aleatorio(0, valores.size() - 1));
-        //naRoda = Integer.parseInt((String) valor[1]);
+    
+    public Object[] rodar(ControllerJogador jogador) {
+        int indice;
+        Object[] valor;
+        jogador.numeroRodadas ++;
+        if(jogador.numeroRodadas != 2)
+                valor = roda.rodar(new RodarAleatorio());
+        else
+            valor = roda.rodar(new RodarViciado());
         return valor;
     }
 
-    @Override
-    public void inicializarDados() {
-        ArrayList<Object[]> valores = new ArrayList<>();
-        valores.add(new Object[]{false, "0"});
-        valores.add(new Object[]{false, "0"});
-        valores.add(new Object[]{false, "1"});
-        valores.add(new Object[]{false, "1"});
-        valores.add(new Object[]{true, "100"});
-        valores.add(new Object[]{true, "100"});
-        valores.add(new Object[]{true, "100"});
-        valores.add(new Object[]{true, "100"});
-        valores.add(new Object[]{true, "200"});
-        valores.add(new Object[]{true, "200"});
-        valores.add(new Object[]{true, "200"});
-        valores.add(new Object[]{true, "200"});
-        valores.add(new Object[]{true, "400"});
-        valores.add(new Object[]{true, "400"});
-        valores.add(new Object[]{true, "400"});
-        valores.add(new Object[]{true, "400"});
-        valores.add(new Object[]{true, "500"});
-        valores.add(new Object[]{true, "500"});
-        valores.add(new Object[]{true, "1000"});
-        valores.add(new Object[]{true, "1000"});
-        set("roda", valores);
-        set("valor", "");
-        //for(ControllerJogador jogador : jogadores){
-        //   set(jogador, 0);
-        //}
-    }
-
-    @Override
-    public void carregarDados(JSONObject Dados) {
-        roda.setRoda((ArrayList<Object[]>) Dados.get("roda"));
-    }
-
-    @Override
-    public void atualizarDados() {
-        carregarDados(getJSON());
-    }
+   
 
     private ControllerJogador verificarVencedor() {
         ControllerJogador vencedor = null;
@@ -217,10 +146,20 @@ public final class ControllerRodaRoda extends Controller implements ControllerAb
             if(vencedor == null)
                 vencedor = jogador;
             else
-                if((Integer)vencedor.get("pontos")<(Integer)jogador.get("pontos"))
+                if(vencedor.getPontos() < jogador.getPontos())
                     vencedor = jogador;
         }
         return vencedor;
     }
 
+    @Override
+    public void palavraDescoberta() {
+        jogadores.forEach((jogador)->{jogador.somarPontosNaRoda(0);});
+        try {
+            this.finalizarEtapa();
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerRodaRoda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
+    
 }

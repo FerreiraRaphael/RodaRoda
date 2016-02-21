@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author raphael
  */
 public class Utils {
+    public String separador = " | ";
     public int aleatorio(int min, int max) {
         int range;
         range = (max - min) + 1;
@@ -24,7 +25,7 @@ public class Utils {
             if(retorno.equals(""))
                 retorno = string;
             else
-                retorno = retorno + " " +string;
+                retorno = retorno + separador +string;
         }
         return retorno;
     }

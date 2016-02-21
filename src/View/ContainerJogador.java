@@ -5,58 +5,42 @@
  */
 package View;
 
+import Controllers.ControllerJogador;
+import Observer.JogadorListener;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 /**
  *
  * @author raphael
  */
-public class ContainerJogador extends javax.swing.JPanel {
-
+public class ContainerJogador extends javax.swing.JPanel implements JogadorListener{
+    private ControllerJogador meuJogador;
+    private final Border vazia;
+    private final TitledBorder borda;
     /**
      * Creates new form ContainerJogador
-     * @param nome
      */
-    public ContainerJogador(String nome) {
+    public ContainerJogador() {
         initComponents();
-        setNome(nome);
-        setPontos("0");
-        setPontosNaRoda("0");
+        borda = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN), "Sua Vez");
+        vazia = BorderFactory.createEmptyBorder();
     }
     
-    public String getNome(){
-        return lbValueNome.getText();
-    }
-    
-    public int getPontos(){
-        return Integer.parseInt(lbValuePontos.getText());
-    }
-    
-    public int getPontosNaRoda(){
-        return Integer.parseInt(lbValueRoda.getText());
-    }
-    
-    public void setNome(String nome){
+    private void setNome(String nome){
         lbValueNome.setText(nome);
     }
     
-    public void setPontos(String Pontos){
+    private void setPontos(String Pontos){
         lbValuePontos.setText(Pontos);
     }
     
-    public void setPontosNaRoda(String pontos){
+    private void setPontosNaRoda(String pontos){
         lbValueRoda.setText(pontos);
     }
-    
-    public void somarPontosNaRoda(int pontos){
-        Integer pontosNaRoda = getPontosNaRoda();
-        pontosNaRoda += pontos;
-        setPontosNaRoda(pontosNaRoda.toString());
-    }
-    
-    public void somarPontos(){
-        Integer pontosDoJogador = getPontos();
-        pontosDoJogador += getPontosNaRoda();
-        setPontos(pontosDoJogador.toString());
-    }
+  
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -163,4 +147,28 @@ public class ContainerJogador extends javax.swing.JPanel {
     private javax.swing.JLabel lbValuePontos;
     private javax.swing.JLabel lbValueRoda;
     // End of variables declaration//GEN-END:variables
+    
+    @Override
+    public void jogadorCriado(ControllerJogador jogador) {
+        setNome(jogador.nome);
+        setPontos("0");
+        setPontosNaRoda("0");
+        meuJogador = jogador;
+    }
+
+    @Override
+    public void jogadorSomouPontos(int pontos, int pontosNaRoda) {
+        setPontos(Integer.toString(pontos));
+        setPontosNaRoda(Integer.toString(pontosNaRoda));
+    }
+
+    @Override
+    public void jogadorPassouVez() {
+        this.setBorder(vazia);
+    }
+
+    @Override
+    public void vezDoJogador() {
+        this.setBorder(borda);
+    }
 }

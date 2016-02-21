@@ -5,36 +5,42 @@
  */
 package Models;
 
+import Strategy.EstrategiaRodar;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author raphael
  */
-public class Roda{
-
-//    private void somarPontos(int pontos) {
-//    }
-//
-//    private void perderVez() {
-//    }
-    ArrayList<Object[]> valores;
+public class Roda {
     
-    /*
-    duas divisões de perde tudo ,
-    duas de passa a vez,
-    quatro divisões de 100 pontos ,
-    quatro divisões de 200 pontos ,
-    quatro divisões de 400 pontos ,
-    duas divisões de 500 pontos ,
-    duas divisões de 1000 pontos.
-    */
+    private ArrayList<Object[]> valores;
+    public Roda() {
+        this.valores = new ArrayList<>();
+        valores.add(new Object[]{false, 0});
+        valores.add(new Object[]{false, 0});
+        valores.add(new Object[]{false, 1});
+        valores.add(new Object[]{false, 1});
+        valores.add(new Object[]{true, 100});
+        valores.add(new Object[]{true, 100});
+        valores.add(new Object[]{true, 100});
+        valores.add(new Object[]{true, 100});
+        valores.add(new Object[]{true, 200});
+        valores.add(new Object[]{true, 200});
+        valores.add(new Object[]{true, 200});
+        valores.add(new Object[]{true, 200});
+        valores.add(new Object[]{true, 400});
+        valores.add(new Object[]{true, 400});
+        valores.add(new Object[]{true, 400});
+        valores.add(new Object[]{true, 400});
+        valores.add(new Object[]{true, 500});
+        valores.add(new Object[]{true, 500});
+        valores.add(new Object[]{true, 1000});
+        valores.add(new Object[]{true, 1000});
+    }  
     
-    public ArrayList<Object []> getRoda(){
-        return this.valores;
-    }
-    public void setRoda(ArrayList<Object []> lista){
-        valores = lista;
+    public Object[] rodar(EstrategiaRodar estrategia) {
+        int indice = estrategia.rodar();
+        return valores.get(indice);
     }
 }

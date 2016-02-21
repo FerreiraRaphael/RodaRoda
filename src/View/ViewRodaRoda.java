@@ -5,46 +5,54 @@
  */
 package View;
 
+import Confiracoes.Configuracao;
 import Controllers.ControllerJogador;
 import Controllers.ControllerRodaRoda;
-import Observer.ControllerRodaRodaEvent;
-import Observer.ControllerRodaRodaListener;
-import java.awt.Color;
+import Observer.PalavraListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
+
 import org.json.simple.JSONObject;
+import Observer.RodaListener;
 
 /**
  *
  * @author raphael
  */
-public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRodaListener {
-
-    private ArrayList<ContainerJogador> containers;
+public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, PalavraListener {
+    private final int numeroJogadores;
     private final ViewInicial vwInicial;
     private final ControllerRodaRoda controllerRodaRoda;
+    private final Configuracao configuracoes;
+    private boolean gameover;
     private ControllerJogador jogadorAtual;
     private int proximo;
+    private int naRoda;
+    
 
     /**
      * Creates new form ViewRodaRoda
      *
      * @param vwInicial
-     * @param configuracoes
+     * @param configuracao
+     * @throws java.io.IOException
      */
-    public ViewRodaRoda(ViewInicial vwInicial, JSONObject configuracoes) throws IOException {
-        this.containers = new ArrayList<>();
+    public ViewRodaRoda(ViewInicial vwInicial) throws IOException {
         initComponents();
+        this.gameover = false;
         this.vwInicial = vwInicial;
-        this.controllerRodaRoda = new ControllerRodaRoda(configuracoes);
-        setarValores(configuracoes);
+        this.configuracoes = Configuracao.getInstance();
+        this.controllerRodaRoda = new ControllerRodaRoda();
+        this.controllerRodaRoda.controllerPalavra.addListener(this);
+        this.numeroJogadores = configuracoes.getNumeroJogadores();
+        this.jogadorAtual = null;
+        setarValores();
     }
 
     /**
@@ -70,6 +78,7 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         lbCategoria = new javax.swing.JLabel();
         lbCategoriaValue = new javax.swing.JLabel();
         pnPalavra = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lbPalavraSecreta = new javax.swing.JLabel();
         pnErros = new javax.swing.JPanel();
@@ -144,10 +153,12 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         containerCentral.add(pnCategoria);
 
         jLabel1.setText("Palavra:");
-        pnPalavra.add(jLabel1);
+        jPanel5.add(jLabel1);
 
-        lbPalavraSecreta.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        pnPalavra.add(lbPalavraSecreta);
+        lbPalavraSecreta.setFont(new java.awt.Font("FreeMono", 1, 24)); // NOI18N
+        jPanel5.add(lbPalavraSecreta);
+
+        pnPalavra.add(jPanel5);
 
         containerCentral.add(pnPalavra);
 
@@ -276,19 +287,21 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
 
     private void btnRodarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRodarMouseClicked
         clearConsole();
-        Object[] valor = controllerRodaRoda.rodar();
-        if ((boolean) valor[0]) {
-            lbPontosNaRoda.setText((String) valor[1]);
+        Object[] valor = controllerRodaRoda.rodar(jogadorAtual);
+        boolean sorte = (boolean) valor[0];
+        naRoda = (int) valor[1];
+        if (sorte) {
+            lbPontosNaRoda.setText(Integer.toString(naRoda));
             trava(false);
             console("Você tirou sorte,"
                     + " tem a change de tentar uma letra ou a palavra inteira,"
-                    + " se acertar ira ganhar " + valor[1] + " pontos");
+                    + " se acertar ira ganhar " + naRoda + " pontos");
         } else {
             console("Você tirou azar,"
                     + " perdeu a vez,");
-            if ("1".equals((String) valor[1])) {
-                console("e perdeu todos seus pontos na roda :(");
-                getContainer((String) jogadorAtual.get("nome")).setPontosNaRoda("0");
+            if (naRoda == 1) {
+                console(" e perdeu todos seus pontos na roda :(");
+                jogadorAtual.somarPontosNaRoda(0);
             }
             proximo();
         }
@@ -307,53 +320,35 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
 
     }//GEN-LAST:event_txtFldTentativaKeyTyped
 
-    private void setarValores(JSONObject configuracoes) throws IOException {
+    private void setarValores() throws IOException {
         controllerRodaRoda.addListener(this);
-        for (int i = 1; i <= (int) configuracoes.get("numeroJogadores"); i++) {
+        ArrayList<String> nomes = new ArrayList<>();
+        for (int i = 1; i <= numeroJogadores; i++) {
             String nome = JOptionPane.showInputDialog("Qual o nome do Jogador " + i);
-            ControllerJogador jogador = new ControllerJogador();
             if ("".equals(nome) || nome == null) {
                 nome = "Jogador " + i;
             }
-            jogador.set("nome", nome);
-            jogador.set("pontos", 0);
-            jogador.atualizarDados();
-            controllerRodaRoda.addJogador(jogador);
-            ContainerJogador ctJogador = new ContainerJogador(nome);
-            containers.add(ctJogador);
-            containerNorte.add(ctJogador);
-        }
-    }
-
-    private void proximo() {
-        ContainerJogador container;
-        Border border;
-        border = BorderFactory.createLineBorder(Color.GREEN);
-        TitledBorder title;
-        title = BorderFactory.createTitledBorder(border, "Sua Vez");
-        border = BorderFactory.createEmptyBorder();
-        if (jogadorAtual != null) {
-            container = getContainer((String) jogadorAtual.get("nome"));
-            container.setBorder(border);
-        }
-        jogadorAtual = controllerRodaRoda.proximo();
-        container = getContainer((String) jogadorAtual.get("nome"));
-        try {
-            container.setBorder(title);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        console(" É a vez do jogador " + jogadorAtual.get("nome"));
-    }
-
-    private ContainerJogador getContainer(String nome) {
-        ContainerJogador retorno = null;
-        for(int i = 0; i < containers.size(); i++){
-            if (nome.equals(containers.get(i).getNome())) {
-                retorno = containers.get(i);
+            if (!nomeJaExiste(nomes, nome)) {
+                nomes.add(nome);
+                ContainerJogador ctJogador = new ContainerJogador();
+                containerNorte.add(ctJogador);
+                ControllerJogador jogador = new ControllerJogador(nome, ctJogador);
+                controllerRodaRoda.addJogador(jogador);
+            } else {
+                JOptionPane.showMessageDialog(this, "Este nome já existe");
+                i--;
             }
         }
-        return retorno;
+    }
+
+    private boolean nomeJaExiste(ArrayList<String> nomes, String novoNome) {
+        boolean existe = false;
+        for (String nome : nomes) {
+            if (nome.equals(novoNome)) {
+                existe = true;
+            }
+        }
+        return existe;
     }
 
     private boolean verificaLetra(String s) {
@@ -375,8 +370,11 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         } else if (tentativa.length() > 1) {
             int resposta;
             resposta = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja tentar a palavra ?", "Atenção", 0);
-            if (resposta == 1) {
+            if (resposta == 0) {
                 controllerRodaRoda.tentar(tentativa, true);
+            }
+            else{
+                txtFldTentativa.setText("");
             }
         } else if (verificaLetra(tentativa)) {
             controllerRodaRoda.tentar(tentativa, false);
@@ -404,6 +402,11 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         }
     }
 
+    private void proximo() {
+        jogadorAtual = controllerRodaRoda.proximo();
+        console(" É a vez do jogador "+jogadorAtual.nome);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRodar;
     private javax.swing.JButton btnTentar;
@@ -417,6 +420,7 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lbCategoria;
@@ -437,61 +441,56 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void acertou(ControllerRodaRodaEvent evento) {
-        JSONObject dados = evento.getDados();
-        atualizar(dados);
+    public void acertou(String palavra, String restante) {
         clearConsole();
-        int pontos = Integer.parseInt(lbPontosNaRoda.getText());
-        getContainer((String) jogadorAtual.get("nome")).somarPontosNaRoda(pontos);
-        console("Parabêns, você acertou e recebeu " + pontos + " pontos"
+        jogadorAtual.somarPontosNaRoda(naRoda);
+        lbPalavraSecreta.setText(palavra);
+        lbRestante.setText(restante);
+        if(palavra.contains("_"))
+        console("Parabêns "+ jogadorAtual.nome +", você acertou e recebeu " + naRoda + " pontos"
                 + ", jogue novamente");
         trava(true);
     }
 
     @Override
-    public void errou(ControllerRodaRodaEvent evento) {
-        JSONObject dados = evento.getDados();
-        atualizar(dados);
+    public void errou(String erros, String restante, boolean errouPalavra) {
+        lbErrosValue.setText(erros);
+        lbRestante.setText(restante);
         clearConsole();
-        console("Você errou e não recebeu os pontos");
+        if (numeroJogadores == 1) {
+            jogadorAtual.erros++;
+            controllerRodaRoda.verificarErros(jogadorAtual, errouPalavra);
+        }
+        if(errouPalavra)
+            console(jogadorAtual.nome + " errou e não recebeu os pontos");
+        else
+            console(jogadorAtual.nome + " errou a palavra");
         proximo();
         trava(true);
     }
 
     @Override
-    public void gameover(ControllerRodaRodaEvent evento) {
-        JSONObject dados = evento.getDados();
-        String vencedor = (String) dados.get("vencedor");
-        int pontos = (int) dados.get("pontos");
-        JOptionPane.showMessageDialog(this, "O jogador Vencedor é " + vencedor + " com " + pontos + " pontos");
-        trocarJanela(vwInicial);
+    public void gameover(ControllerJogador vencedor) {
+        this.gameover = true;
+        if(vencedor != null){
+            JOptionPane.showMessageDialog(this, "O jogador Vencedor é " + vencedor.nome + " com " + vencedor.getPontos() + " pontos");
+            trocarJanela(vwInicial);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Você perdeu, mais sorte da proxima vez, looser");
+            trocarJanela(vwInicial);
+        }
+        
     }
 
+    /*
     @Override
-    public void acertouPalavra(ControllerRodaRodaEvent evento) {
-        clearConsole();
-        int pontos = getContainer((String) jogadorAtual.get("nome")).getPontosNaRoda();
-        getContainer((String) jogadorAtual.get("nome")).somarPontos();
-        console("Parabêns, você acertou a palavra e recebeu " + pontos + " pontos"
-                + ", jogue novamente");
-        trava(true);
-    }
-
-    @Override
-    public void errouPalavra(ControllerRodaRodaEvent evento) {
-        clearConsole();
-        console("Mais sorte da proxima vez Looser");
-        proximo();
-        trava(true);
-    }
-
-    @Override
-    public void acabouEtapa(ControllerRodaRodaEvent evento) {
+    public void acabouEtapa(RodaRodaEvent evento) {
         for (ContainerJogador container : containers) {
             container.setPontosNaRoda("0");
         }
     }
-
+     */
     private void atualizar(JSONObject dados) {
         if (dados.get("palavra") != null) {
             String palavra = (String) dados.get("palavra");
@@ -508,11 +507,11 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
     }
 
     @Override
-    public void iniciouEtapa(ControllerRodaRodaEvent evento) {
-        JSONObject dados = evento.getDados();
-        lbPalavraSecreta.setText((String) dados.get("palavra"));
-        lbCategoriaValue.setText((String) dados.get("categoria"));
-        lbRestante.setText((String) dados.get("restante"));
+    public void iniciouEtapa(String palavra, String categoria, String restante) {
+        lbPalavraSecreta.setText(palavra);
+        lbCategoriaValue.setText(categoria);
+        lbRestante.setText(restante);
+        lbErrosValue.setText("");
         proximo();
         trava(true);
     }
@@ -522,5 +521,15 @@ public class ViewRodaRoda extends javax.swing.JFrame implements ControllerRodaRo
         janela.setSize(this.getSize());
         janela.setLocationRelativeTo(this);
         janela.setVisible(true);
+    }
+
+    @Override
+    public void palavraDescoberta() {
+        jogadorAtual.somarPontos();
+        controllerRodaRoda.palavraDescoberta();
+        if(!this.gameover)
+            JOptionPane.showMessageDialog(this, "Parabens "+jogadorAtual.nome+" você"
+                    + " acertou a palavra e ganhou os pontos acumulados na rodada");
+        
     }
 }

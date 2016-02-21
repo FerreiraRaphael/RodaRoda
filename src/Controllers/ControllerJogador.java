@@ -6,61 +6,56 @@
 package Controllers;
 
 import Models.Jogador;
-import java.util.ArrayList;
-import org.json.simple.JSONObject;
+import View.ContainerJogador;
 
 /**
  *
  * @author raphael
  */
-public final class ControllerJogador extends Controller implements ControllerAbstrato {
-    
+public final class ControllerJogador {
     private final Models.Jogador jogador;
-
-    public ControllerJogador() {
+    private final ContainerJogador container;
+    public String nome;
+    public int erros;
+    public int numeroRodadas; 
+   public ControllerJogador(String nome, ContainerJogador ctJogador) {
+        this.erros = 0;
         this.jogador = new Jogador();
-        inicializarDados();
+        this.jogador.setNome(nome);
+        this.nome = nome;
+        this.container = ctJogador;
+        nascimento();
     }
-
-    public boolean fazerTentativa(ControllerPalavra controllerPalavra, String tentativa, boolean tentarPalavra) {
-        if (!tentarPalavra) 
-            return controllerPalavra.compararLetra(tentativa.charAt(0));
-        else 
-            return controllerPalavra.compararPalavra(tentativa);
+    
+    private void nascimento(){
+        container.jogadorCriado(this);
     }
 
     public void somarPontos() {
         int pontos = jogador.getPontos() + jogador.getPontosNaRoda();
-        set("pontos", pontos);
+        jogador.setPontos(pontos);
+        container.jogadorSomouPontos(jogador.getPontos(), jogador.getPontosNaRoda());
     }
     
     public void somarPontosNaRoda(int pontos){
         if (pontos > 0) {
-            pontos += (int) get("pontos");
+            pontos += jogador.getPontosNaRoda();
         } else {
             pontos = 0;
         }
-        set("pontosNaRoda", pontos);
+        jogador.setPontosNaRoda(pontos);
+        container.jogadorSomouPontos(jogador.getPontos(), jogador.getPontosNaRoda());
     }
     
-
-    @Override
-    public void inicializarDados() {
-        set("nome", jogador.getNome());
-        set("pontos", jogador.getPontos());
-        set("pontos", jogador.getPontosNaRoda());
+    public int getPontos(){
+        return jogador.getPontos();
     }
-
-    @Override
-    public void carregarDados(JSONObject Dados) {
-        jogador.setNome((String) Dados.get("nome"));
-        jogador.setPontos((int) Dados.get("pontos"));
-        jogador.setPontosNaRoda((int) Dados.get("pontosNaRoda"));
+    
+    public void passeiVez(){
+        container.jogadorPassouVez();
     }
-
-    @Override
-    public void atualizarDados() {
-        carregarDados(getJSON());
+    
+    public void minhaVez(){
+        container.vezDoJogador();
     }
-
 }

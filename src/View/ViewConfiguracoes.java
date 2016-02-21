@@ -5,19 +5,20 @@
  */
 package View;
 
-import Controllers.ControllerConfiguracao;
+import Confiracoes.Configuracao;
+import Confiracoes.ControllerConfiguracao;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.json.simple.JSONObject;
 
 /**
  *
  * @author raphael
  */
-public class ViewConfiguracoes extends javax.swing.JFrame {
+public final class ViewConfiguracoes extends javax.swing.JFrame {
     
     ViewInicial vwInicial;
     ControllerConfiguracao controllerConfiguracao;
+    Configuracao configuracoes;
     public ViewConfiguracoes(ViewInicial vwInicial) {
         this.vwInicial = vwInicial;
         initComponents();
@@ -120,7 +121,18 @@ public class ViewConfiguracoes extends javax.swing.JFrame {
 
         pnCentral.add(pnNumeroPalavras);
 
+        chbDiferentesCategorias.setSelected(true);
         chbDiferentesCategorias.setText("Diferentes Categorias");
+        chbDiferentesCategorias.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chbDiferentesCategoriasStateChanged(evt);
+            }
+        });
+        chbDiferentesCategorias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chbDiferentesCategoriasMouseClicked(evt);
+            }
+        });
         pnDiferentesCategorias.add(chbDiferentesCategorias);
 
         pnCentral.add(pnDiferentesCategorias);
@@ -186,13 +198,12 @@ public class ViewConfiguracoes extends javax.swing.JFrame {
     }//GEN-LAST:event_cbNumeroPalavrasComponentShown
 
     private void btnSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseClicked
-        JSONObject dados = verificarDados();
-        if(dados.get("erro") != null){
+        
+        if(!verificarDados()){
             JOptionPane.showMessageDialog(new JOptionPane(), "Preencha os campos obrigatorios");
         }
         else{
-            controllerConfiguracao.carregarDados(dados);
-            vwInicial.setJson(dados);
+            salvarConfiguracoes();
             trocarJanela(vwInicial);
         }
     }//GEN-LAST:event_btnSalvarMouseClicked
@@ -204,26 +215,30 @@ public class ViewConfiguracoes extends javax.swing.JFrame {
     private void jPanel1formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1formComponentHidden
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel1formComponentHidden
-    
-    private JSONObject verificarDados() {
-        JSONObject dados = new JSONObject();
 
-        if (!cbNumeroEtapas.getSelectedItem().toString().contains("Selecione")) {
-            dados.put("numeroEtapas", Integer.parseInt((String) cbNumeroEtapas.getSelectedItem()));
-        } else {
-            dados.put("erro", true);
-        }
-        if (!cbNumeroPalavras.getSelectedItem().toString().contains("Selecione")) {
-            dados.put("numeroPalavras", Integer.parseInt((String) cbNumeroPalavras.getSelectedItem()));
-        } else {
-            dados.put("erro", true);
-        }
-        if (!cbNumeroJogadores.getSelectedItem().toString().contains("Selecione")) {
-            dados.put("numeroJogadores", Integer.parseInt((String) cbNumeroJogadores.getSelectedItem()));
-        } else {
-            dados.put("erro", true);
-        }
-        return dados;
+    private void chbDiferentesCategoriasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chbDiferentesCategoriasStateChanged
+        
+    }//GEN-LAST:event_chbDiferentesCategoriasStateChanged
+
+    private void chbDiferentesCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chbDiferentesCategoriasMouseClicked
+        controllerConfiguracao.setDiferentesCategorias(chbDiferentesCategorias.isSelected());
+    }//GEN-LAST:event_chbDiferentesCategoriasMouseClicked
+    
+    private boolean verificarDados() {
+        if (cbNumeroEtapas.getSelectedItem().toString().contains("Selecione")) 
+            return false;
+        if (cbNumeroPalavras.getSelectedItem().toString().contains("Selecione")) 
+            return false;
+        if (cbNumeroJogadores.getSelectedItem().toString().contains("Selecione")) 
+            return false;
+        return true;
+    }
+    
+    private void salvarConfiguracoes(){
+        controllerConfiguracao.setNumeroEtapas(cbNumeroEtapas.getSelectedIndex());
+        controllerConfiguracao.setNumeroJogadores(cbNumeroJogadores.getSelectedIndex());
+        controllerConfiguracao.setNumeroPalavras(cbNumeroPalavras.getSelectedIndex());
+        controllerConfiguracao.setDiferentesCategorias(chbDiferentesCategorias.isSelected());
     }
     
     public void setCombosBoxes() {
@@ -236,12 +251,14 @@ public class ViewConfiguracoes extends javax.swing.JFrame {
         for (Integer i = 1; i <= (int) controllerConfiguracao.getLimiteNumeroPalavras(); i++) {
             cbNumeroPalavras.addItem(i.toString());
         }
+        /*
         if((Integer)controllerConfiguracao.get("numeroEtapas") != 0)
-            cbNumeroEtapas.setSelectedItem(controllerConfiguracao.get("numeroEtapas"));
+            cbNumeroEtapas.setSelectedItem(configuracoes.);
         if((Integer)controllerConfiguracao.get("numeroPalavras") != 0)
             cbNumeroPalavras.setSelectedItem(controllerConfiguracao.get("numeroPalavras"));
         if((Integer)controllerConfiguracao.get("numeroJogadores") != 0)
             cbNumeroJogadores.setSelectedItem(controllerConfiguracao.get("numeroJogadores"));
+            */
     }
     private void trocarJanela(JFrame janela){
         this.setVisible(false);
@@ -249,6 +266,7 @@ public class ViewConfiguracoes extends javax.swing.JFrame {
         janela.setLocationRelativeTo(this);
         janela.setVisible(true);
     }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;

@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controllers;
-
-import org.json.simple.JSONObject;
-
-
+package Strategy;
 
 /**
  *
  * @author raphael
  */
-public interface ControllerAbstrato {
-    public void inicializarDados();
-    public void carregarDados(JSONObject Dados);
-    public void atualizarDados();
+public interface EstrategiaRodar {
+    int rodar();
 }

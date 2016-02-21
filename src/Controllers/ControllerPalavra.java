@@ -6,16 +6,16 @@
 package Controllers;
 
 import Models.Palavra;
+import Observer.PalavraListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.json.simple.JSONObject;
 import utils.Arquivo;
 
 /**
  *
  * @author raphael
  */
-public final class ControllerPalavra extends Controller implements ControllerAbstrato {
+public final class ControllerPalavra {
 
     private final Palavra palavra;
     private final Arquivo arquivo;
@@ -23,40 +23,59 @@ public final class ControllerPalavra extends Controller implements ControllerAbs
     private ArrayList<String> palavras;
     private ArrayList<String> categoriasSelecionadas;
     private ArrayList<String> palavrasSelecionadas;
+    private ArrayList<PalavraListener> listeners;
+    private StringBuilder letrasRestantes;
     private String categoriaSelecionada;
     private String palavraSelecionada;
     private String erros;
     private final int numeroPalavras;
     private final boolean diferentesCategorias;
-    
+
     public ControllerPalavra(int numeroPalavras, boolean diferentesCategorias) {
         palavras = new ArrayList<>();
+        listeners = new ArrayList<>();
         arquivo = new Arquivo();
         palavra = new Models.Palavra();
-        inicializarDados();
         this.diferentesCategorias = diferentesCategorias;
         this.numeroPalavras = numeroPalavras;
         palavraSelecionada = null;
         categoriaSelecionada = null;
         palavraSecreta = null;
     }
-    
-    public String getCategoria() throws IOException{
-        if(categoriaSelecionada == null)
+
+    public void addListener(PalavraListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(PalavraListener listener) {
+        listeners.remove(listener);
+    }
+
+    public StringBuilder getLetrasRestantes() throws IOException {
+        if (letrasRestantes == null) {
             escolherPalavras();
+        }
+        return letrasRestantes;
+    }
+
+    public String getCategoria() throws IOException {
+        if (categoriaSelecionada == null) {
+            escolherPalavras();
+        }
         return categoriaSelecionada;
     }
-    
-    public String getPalavra() throws IOException{
-        if(palavraSecreta == null)
+
+    public String getPalavra() throws IOException {
+        if (palavraSecreta == null) {
             escolherPalavras();
+        }
         return palavraSecreta.toString();
     }
-    
-    public String getErros(){
+
+    public String getErros() {
         return erros;
     }
-    
+
     private void escolherPalavras() throws IOException {
         arquivo.escolherArquivo("/Categorias");
         palavras = arquivo.lerArquivo(arquivo.getFile());
@@ -70,97 +89,144 @@ public final class ControllerPalavra extends Controller implements ControllerAbs
         }
         categoriaSelecionada = arquivo.unirString(categoriasSelecionadas);
         palavraSelecionada = arquivo.unirString(palavrasSelecionadas);
-        set("categoriaSelecionada", categoriaSelecionada);
-        set("palavraSelecionada", palavraSelecionada);
-        atualizarDados();
+        letrasRestantes = new StringBuilder("a b c d e f g h i j k l m n o p q r t s v u x w y z ç");
         setarPalavraSecreta();
-        set("palavraSecreta", palavraSecreta);
         erros = "";
-        set("erros", erros);
+        palavra.setCategoriaSelecionada(categoriaSelecionada);
+        palavra.setPalavraSelecionada(palavraSelecionada);
     }
 
     private void setarPalavraSecreta() {
         palavraSecreta = new StringBuilder();
+        String sepador = arquivo.separador.trim();
         for (int i = 0; i < palavraSelecionada.length(); i++) {
-            if (palavraSelecionada.charAt(i) == ' ') {
-                palavraSecreta.append(" ");
+            if (palavraSelecionada.charAt(i) == ' ' || String.valueOf(palavraSelecionada.charAt(i)).equals(String.valueOf(sepador))) {
+                palavraSecreta.append(palavraSelecionada.charAt(i));
             } else {
-                palavraSecreta.append("_");
+                palavraSecreta.append("-");
             }
         }
     }
 
+    private String selecionarPalavra() throws IOException {
+        arquivo.escolherArquivo("/Categorias");
+        palavras = arquivo.lerArquivo(arquivo.getFile());
+        String selecionada = palavras.get(arquivo.aleatorio(0, this.palavras.size() - 1)).toLowerCase();
+        return selecionada;
+    }
+
     private void setarPalavras(int numeroPalavras, boolean diferentesCategorias) throws IOException {
+        String selecionada;
+        selecionada = selecionarPalavra();
         if (diferentesCategorias) {
             for (int i = 0; i < numeroPalavras; i++) {
-                arquivo.escolherArquivo("/Categorias");
-                palavras = arquivo.lerArquivo(arquivo.getFile());
-                palavrasSelecionadas.add(palavras.get(arquivo.aleatorio(0, this.palavras.size() - 1)).toLowerCase());
+                while (palavrasSelecionadas.contains(selecionada)) {
+                    selecionada = selecionarPalavra();
+                }
+                palavrasSelecionadas.add(selecionada);
                 categoriasSelecionadas.add(arquivo.getName());
             }
         } else {
             categoriasSelecionadas.add(arquivo.getName());
             for (int i = 0; i < numeroPalavras; i++) {
-                palavrasSelecionadas.add(palavras.get(arquivo.aleatorio(0, this.palavras.size() - 1)).toLowerCase());
+                while (palavrasSelecionadas.contains(selecionada)) {
+                    selecionada = palavras.get(arquivo.aleatorio(0, this.palavras.size() - 1)).toLowerCase();
+                }
+                palavrasSelecionadas.add(selecionada);
             }
         }
     }
 
     public boolean compararLetra(char c) {
-        String palavra = (String) get("palavraSelecionada");
+        String palavra = palavraSelecionada;
         ArrayList<Integer> indices = new ArrayList<>();
+        boolean acertou = false;
         if (palavra.indexOf(c) != -1) {
             int fromIndex = 0;
             while (fromIndex != -1) {
                 fromIndex = palavra.indexOf(c, fromIndex);
-                if(fromIndex != -1){
+                if (fromIndex != -1) {
                     palavraSecreta.setCharAt(fromIndex, c);
                     fromIndex++;
                 }
             }
-            set("palavraSecreta", palavraSecreta);
-            return true;
-
+            acertou = true;
         } else {
             if (erros.equals("")) {
                 erros = erros + c;
             } else {
                 erros = erros + ", " + c;
             }
-            set("erros", erros);
-            return false;
+            acertou = false;
         }
+        retirarLetra(String.valueOf(c));
+        if (acertou) {
+            acertou();
+            verificarPalavraSecreta();
+        } else {
+            errou(false);
+        }
+        return acertou;
     }
 
     public boolean compararPalavra(String palavra) {
+        palavra = tratarTentativa(palavra);
         if (palavraSelecionada.toLowerCase().equals(palavra.toLowerCase())) {
             palavraSecreta = new StringBuilder(palavra.toLowerCase());
-            set("palavraSecreta", palavraSecreta);
+            acertou();
+            palavraDescoberta();
             return true;
         } else {
+            errou(true);
             return false;
         }
     }
-
-    public boolean verificarPalavraSecreta() {
-        return palavraSecreta.toString().toLowerCase().equals(palavraSelecionada.toLowerCase());
+    private String tratarTentativa(String tentativa){
+        StringBuilder tent = new StringBuilder(tentativa);
+        int fromIndex = 0;
+        while(fromIndex != -1){
+            fromIndex = palavraSelecionada.indexOf(arquivo.separador, fromIndex);
+            if(fromIndex != -1){
+                tent.deleteCharAt(fromIndex);
+                tent.insert(fromIndex, arquivo.separador);
+                fromIndex += arquivo.separador.length();
+            }
+        }
+        return tent.toString();
+    }
+    public void verificarPalavraSecreta() {
+        if (palavraSecreta.toString().toLowerCase().equals(palavraSelecionada.toLowerCase())) {
+            palavraDescoberta();
+        }
     }
 
-    @Override
-    public void inicializarDados() {
-        set("palavraSelecionada", palavra.getPalavraSelecionada());
-        set("categoriaSelecionada", palavra.getCategoriaSelecionada());
+    private void retirarLetra(String s) {
+        int indice = letrasRestantes.indexOf(s);
+        letrasRestantes.deleteCharAt(indice);
+        if (indice > 0) {
+            letrasRestantes.deleteCharAt(indice - 1);
+        }
     }
 
-    @Override
-    public void carregarDados(JSONObject Dados) {
-        palavra.setCategoriaSelecionada((String) Dados.get("categoria"));
-        palavra.setPalavraSelecionada((String) Dados.get("palavra"));
+    public void acertou() {
+        listeners.forEach((listener) -> {
+            listener.acertou(palavraSecreta.toString(), letrasRestantes.toString());
+        });
     }
 
-    @Override
-    public void atualizarDados() {
-        carregarDados(getJSON());
+    public void errou(boolean errouPalavra) {
+        listeners.forEach((listener) -> {
+            listener.errou(erros, letrasRestantes.toString(), errouPalavra);
+        });
     }
 
+    public void palavraDescoberta() {
+        palavraSecreta = null;
+        categoriaSelecionada = null;
+        letrasRestantes = null;
+        erros = "";
+        listeners.forEach((listener) -> {
+            listener.palavraDescoberta();
+        });
+    }
 }
