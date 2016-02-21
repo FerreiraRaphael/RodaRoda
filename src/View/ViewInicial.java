@@ -5,7 +5,7 @@
  */
 package View;
 
-import Confiracoes.Configuracao;
+import Configuracoes.Configuracao;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

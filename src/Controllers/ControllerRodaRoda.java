@@ -5,7 +5,7 @@
  */
 package Controllers;
 
-import Confiracoes.Configuracao;
+import Configuracoes.Configuracao;
 import Models.Roda;
 import Observer.PalavraAdapter;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public final class ControllerRodaRoda extends PalavraAdapter{
     private final ArrayList<RodaListener> listeners;
     private final Utils utils;
     private final Roda roda;
-    private Configuracao configuracao;
+    private final Configuracao configuracao;
     private int numeroEtapas;
     private int atual;
     public final ControllerPalavra controllerPalavra;
@@ -127,11 +127,10 @@ public final class ControllerRodaRoda extends PalavraAdapter{
     }
     
     public Object[] rodar(ControllerJogador jogador) {
-        int indice;
         Object[] valor;
         jogador.numeroRodadas ++;
         if(jogador.numeroRodadas != 2)
-                valor = roda.rodar(new RodarAleatorio());
+            valor = roda.rodar(new RodarAleatorio());
         else
             valor = roda.rodar(new RodarViciado());
         return valor;

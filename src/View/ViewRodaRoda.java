@@ -5,7 +5,7 @@
  */
 package View;
 
-import Confiracoes.Configuracao;
+import Configuracoes.Configuracao;
 import Controllers.ControllerJogador;
 import Controllers.ControllerRodaRoda;
 import Observer.PalavraListener;
@@ -409,7 +409,7 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         jogadorAtual.somarPontosNaRoda(naRoda);
         lbPalavraSecreta.setText(palavra);
         lbRestante.setText(restante);
-        if(palavra.contains("_"))
+        if(palavra.contains("-"))
         console("Parabêns "+ jogadorAtual.nome +", você acertou e recebeu " + naRoda + " pontos"
                 + ", jogue novamente");
         trava(true);
@@ -467,8 +467,9 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         lbCategoriaValue.setText(categoria);
         lbRestante.setText(restante);
         lbErrosValue.setText("");
-        proximo();
         trava(true);
+        if(jogadorAtual == null)
+            proximo();
     }
 
     private void trocarJanela(JFrame janela) {
@@ -485,6 +486,7 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         if(!this.gameover)
             JOptionPane.showMessageDialog(this, "Parabens "+jogadorAtual.nome+" você"
                     + " acertou a palavra e ganhou os pontos acumulados na rodada");
+        proximo();
         
     }
 }

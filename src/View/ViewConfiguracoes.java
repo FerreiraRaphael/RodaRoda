@@ -5,8 +5,8 @@
  */
 package View;
 
-import Confiracoes.Configuracao;
-import Confiracoes.ControllerConfiguracao;
+import Configuracoes.Configuracao;
+import Configuracoes.ControllerConfiguracao;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
