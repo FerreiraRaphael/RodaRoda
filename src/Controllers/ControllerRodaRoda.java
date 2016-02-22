@@ -84,7 +84,7 @@ public final class ControllerRodaRoda extends PalavraAdapter{
         jogadores.get(atual).minhaVez();
         return jogadores.get(atual);
     }
-    /** Este método servirá para ver se será comparado uma letra ou palavra.
+    /** Este método servirá para ver se será comparado uma letra ou palavra e entrará no método para realizar a comparação.
      * 
      * @param tentativa String - Palavra ou letra que será passada para avaliação
      * @param palavra boolean - Verificará se será tentado uma palavra ou apenas uma letra.
@@ -191,7 +191,7 @@ public final class ControllerRodaRoda extends PalavraAdapter{
         }
         return vencedor;
     }
-    /** Caso a palavra seja descoberta este método finalizará a étapa e irá zerar os pontos na roda(pontos por etapa) de todos os jogadores.
+    /** Caso a palavra seja descoberta este método finalizará a étapa e irá zerar os pontos na roda(pontos por etapa) de todos os jogadores. Caso não tenha mais etapas será chamado outro método para cuidar do assunto.
      * 
      */
     @Override

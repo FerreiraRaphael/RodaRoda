@@ -20,7 +20,7 @@ public class ViewInicial extends javax.swing.JFrame {
 
     private ViewRodaRoda vwRodaRoda;
     private final ViewConfiguracoes vwConf;
-    /**
+    /** Construtor que irá instanciar o ViewInicial.
      * Creates new form ViewFrame
      */
     public ViewInicial() {
@@ -163,7 +163,10 @@ public class ViewInicial extends javax.swing.JFrame {
     private void btnSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSairMouseClicked
         System.exit(0);
     }//GEN-LAST:event_btnSairMouseClicked
-    
+    /** Este método irá trocar a Janela atual por outra janela estabelecida pelo parâmetro.
+     * 
+     * @param janela JFrame - Janela que irá substituir a anterior.
+     */
     private void trocarJanela(JFrame janela){
         this.setVisible(false);
         janela.setSize(this.getSize());

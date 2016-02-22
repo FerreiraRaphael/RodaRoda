@@ -36,11 +36,10 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
     private int naRoda;
     
 
-    /**
+    /** Construtor para instanciar ViewRodaRoda.
      * Creates new form ViewRodaRoda
      *
-     * @param vwInicial
-     * @param configuracao
+     * @param vwInicial ViewInicial - Servirá para voltar ao Inicial quando necessário.
      * @throws java.io.IOException
      */
     public ViewRodaRoda(ViewInicial vwInicial) throws IOException {
@@ -54,19 +53,31 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         this.jogadorAtual = null;
         setarValores();
     }
-    
+    /** Este método serve para retornar o arquivo de texto  do Label dos Erros.
+     * 
+     * @return String - Retorna uma String com os erros.
+     */
     public String getErros(){
         return lbErrosValue.getText();
     }
-    
+    /** Este método serve para retornar a Palavra da Label Palavra.
+     * 
+     * @return String - Palavra
+     */
     public String getPalavra(){
         return lbPalavraSecreta.getText();
     }
-    
+    /** Este método serve para retornar as Letras restantes do Label Restante.
+     * 
+     * @return String - Letras Restantes.
+     */
     public String getLetrasRestantes(){
         return lbRestante.getText();
     }
-    
+    /** Este método serve para retornar as Categorias contidas no Label Categorias.
+     * 
+     * @return String - Categorias.
+     */
     public String getCategoria(){
         return lbCategoriaValue.getText();
     }
@@ -299,6 +310,10 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         }
     }//GEN-LAST:event_btnTentarMouseClicked
 
+    /** Este método será usado para escolher o nome dos jogadores. Caso o jogador não tenha nome então será chamado de jogador (numero do jogador).
+     * 
+     * @throws IOException 
+     */
     private void setarValores() throws IOException {
         controllerRodaRoda.addListener(this);
         ArrayList<String> nomes = new ArrayList<>();
@@ -319,7 +334,12 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
             }
         }
     }
-
+    /** Este método se trata de um boolean que quer verificar se o nome escolhido já existe.
+     * 
+     * @param nomes ArrayList<String> - Será o ArrayList com todos os nomes.
+     * @param novoNome String - O nome que será verificado.
+     * @return boolean - Retorna true se realmente já existe um nome e false se não existe.
+     */
     private boolean nomeJaExiste(ArrayList<String> nomes, String novoNome) {
         boolean existe = false;
         for (String nome : nomes) {
@@ -329,7 +349,11 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         }
         return existe;
     }
-
+    /** Verifica a letra colocado pelo jogador em relação à lista de erros e a lista de restantes.
+     * 
+     * @param s String - Letra passada pelo jogador.
+     * @return boolean - Caso seja true quer dizer que a letra escolhida estava entre as restantes. Caso dê false, quer dizer que ou a letra não está no padrão desejado pelo restantes ou ela já foi utilizada e esta nas erradas.
+     */
     private boolean verificaLetra(String s) {
         s = s.toLowerCase();
         boolean erro = !lbErrosValue.getText().contains(s);
@@ -341,7 +365,11 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         }
         return erro && restante;
     }
-
+    /** Este método irá verificar a tentativa e alertar o usuário da certeza de suas decisões. Para ver se ele realmente quer tentar a palavra. Caso não queria ele simplesmente não pergunta sobre a letra vai direto para realizar o teste e posteriormente a comparação.
+     * 
+     * @param tentativa String - A palavra a ser tentada.
+     * @throws IOException 
+     */
     private void verificarTentativa(String tentativa) throws IOException {
         tentativa = tentativa.toLowerCase();
         if (tentativa.equals("")) {
@@ -360,16 +388,24 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         }
         txtFldTentativa.setText("");
     }
-
+    /** Este método limpa o console.
+     * 
+     */
     private void clearConsole() {
         jTextPane1.setText("");
     }
-
+    /** Serve para colocar no console o texto que já tinha junto com o acrescentado.
+     * 
+     * @param texto String - Texto acrescentado.
+     */
     private void console(String texto) {
         String corpo = jTextPane1.getText();
         jTextPane1.setText(corpo + texto);
     }
-
+    /** Serve para modificar o painel quando ao botão Rodar ou Tentar e limpa ou não os pontos na roda que ainda não foram acresentador a um usuário.
+     * 
+     * @param lock boolean - O valor true ou false que fará a modificação. Rodar e Tentar são inversamente proporcionais. Caso um esteja visivel o outro não pode estar.
+     */
     private void trava(boolean lock) {
         btnRodar.setVisible(lock);
         btnTentar.setVisible(!lock);
@@ -380,7 +416,9 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
             txtFldTentativa.requestFocus();
         }
     }
-
+    /** Serve para passar a vez para o próximo jogador.
+     * 
+     */
     private void proximo() {
         jogadorAtual = controllerRodaRoda.proximo();
         console(" É a vez do jogador "+jogadorAtual.nome);
@@ -419,6 +457,11 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
     private javax.swing.JTextField txtFldTentativa;
     // End of variables declaration//GEN-END:variables
 
+    /** Mostra quando um jogador acertou e cuida disso na tela.
+     * 
+     * @param palavra String - Serve para modificar a palavra secreta.
+     * @param restante String - Serve para modificar as palavras restantes.
+     */
     @Override
     public void acertou(String palavra, String restante) {
         clearConsole();
@@ -430,7 +473,12 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
                 + ", jogue novamente");
         trava(true);
     }
-
+    /** Este método modifica os erros apresentados e as palavras restantes. Além de verificar os erros do jogador caso ele seja um jogador e caso seja mais de um tratando do assunto.
+     * 
+     * @param erros String - Valor que aparecerá nos erros.
+     * @param restante String - Valor que aparecerá nos restantes.
+     * @param errouPalavra boolean - Será utilizado para ver se o usuário errou a palavra ou não.
+     */
     @Override
     public void errou(String erros, String restante, boolean errouPalavra) {
         lbErrosValue.setText(erros);
@@ -447,7 +495,10 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         proximo();
         trava(true);
     }
-
+    /** Este método servirá para mostrar ao usuário caso tenha ganhado(e mostrar o ganhador e sua pontuação) ou errado demonstrando que perdeu. Posteriormente retornará ao ViewIncial.
+     * 
+     * @param vencedor ControllerJogador - Mostrará o jogador, caso não tenha então será null.
+     */
     @Override
     public void gameover(ControllerJogador vencedor) {
         this.gameover = true;
@@ -461,22 +512,12 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         }
         
     }
-
-    private void atualizar(JSONObject dados) {
-        if (dados.get("palavra") != null) {
-            String palavra = (String) dados.get("palavra");
-            lbPalavraSecreta.setText(palavra);
-        }
-        if (dados.get("erros") != null) {
-            String erros = (String) dados.get("erros");
-            lbErrosValue.setText(erros);
-        }
-        if (dados.get("restante") != null) {
-            String restante = (String) dados.get("restante");
-            lbRestante.setText(restante);
-        }
-    }
-
+    /**
+     * 
+     * @param palavra
+     * @param categoria
+     * @param restante 
+     */
     @Override
     public void iniciouEtapa(String palavra, String categoria, String restante) {
         lbPalavraSecreta.setText(palavra);
@@ -487,14 +528,19 @@ public class ViewRodaRoda extends javax.swing.JFrame implements RodaListener, Pa
         if(jogadorAtual == null)
             proximo();
     }
-
+    /** Este método irá trocar a Janela atual por outra janela estabelecida pelo parâmetro.
+     * 
+     * @param janela JFrame - Janela que irá substituir a anterior.
+     */
     private void trocarJanela(JFrame janela) {
         this.setVisible(false);
         janela.setSize(this.getSize());
         janela.setLocationRelativeTo(this);
         janela.setVisible(true);
     }
-
+    /** Este método somará os pontos do usuário atual e verificará se terminou as etapas. Caso tenha terminado o jogo acaba. Caso não, será mostrado uma mensagem parabenizando o jogador pelo vitória da rodada.
+     * 
+     */
     @Override
     public void palavraDescoberta() {
         jogadorAtual.somarPontos();
