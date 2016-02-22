@@ -17,7 +17,6 @@ import javax.swing.border.TitledBorder;
  * @author raphael
  */
 public class ContainerJogador extends javax.swing.JPanel implements JogadorListener{
-    private ControllerJogador meuJogador;
     private final Border vazia;
     private final TitledBorder borda;
     /** Construtor que criará uma instancia de ContainerJogador.
@@ -171,14 +170,13 @@ public class ContainerJogador extends javax.swing.JPanel implements JogadorListe
 
     /** Este método serve para passar os dados do jogador para sua interface. Ou seja, o ContainerJogador como um Listenner de ControllerJogador irá pegar as informações do Source do Observer para demonstrá-los em sua interface gráfica.
      * 
-     * @param jogador ControllerJogador - Esta é o Source que está sendo passado como parâmetro para passar as informações que seu Listener preicsa.
+     * @param nome String - Nome do Jogador.
      */
     @Override
-    public void jogadorCriado(ControllerJogador jogador) {
-        setNome(jogador.nome);
+    public void jogadorCriado(String nome) {
+        setNome(nome);
         setPontos("0");
         setPontosNaRoda("0");
-        meuJogador = jogador;
     }
     /** Este método servirá para ouvir o Source e buscar informações sobre os Pontos Gerais e os Pontos na roda(pontos por Étapa).
      * 

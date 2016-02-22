@@ -35,7 +35,7 @@ public final class ControllerJogador {
      * 
      */
     private void nascimento(){
-        container.jogadorCriado(this);
+        container.jogadorCriado(nome);
     }
     /** Será utilizado tanto para alterar os pontos do jogador quanto fará parte do Padrão de Projetos Observer avisando aos listeners das modificações feitas.
      * 

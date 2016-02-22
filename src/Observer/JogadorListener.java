@@ -16,7 +16,7 @@ public interface JogadorListener extends java.util.EventListener{
      * 
      * @param jogador ControllerJogador - Será passado como parametro para poder passar os dados para os listenners.
      */
-    void jogadorCriado(ControllerJogador jogador);
+    void jogadorCriado(String nome);
     /** Servirá utilizado para passar para os listeners informações sobre os pontos gerais e os pontos que estão naquela etapa.
      * 
      * @param pontos int - Será os Pontos Gerais do jogador.

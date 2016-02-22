@@ -18,7 +18,6 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
     
     ViewInicial vwInicial;
     ControllerConfiguracao controllerConfiguracao;
-    Configuracao configuracoes;
     /** Construtor que instanciará o ViewConfiguracoes.
      * 
      * @param vwInicial ViewInicial - View que será usado pelo arquivo.
@@ -46,13 +45,13 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         pnCentral = new javax.swing.JPanel();
         pnNumeroJogadores = new javax.swing.JPanel();
         lbNumeroJogadores = new javax.swing.JLabel();
-        cbNumeroJogadores = new javax.swing.JComboBox<String>();
+        cbNumeroJogadores = new javax.swing.JComboBox<>();
         pnNumeroEtapas = new javax.swing.JPanel();
         lbNumeroEtapas = new javax.swing.JLabel();
-        cbNumeroEtapas = new javax.swing.JComboBox<String>();
+        cbNumeroEtapas = new javax.swing.JComboBox<>();
         pnNumeroPalavras = new javax.swing.JPanel();
         lbNumeroPalavras = new javax.swing.JLabel();
-        cbNumeroPalavras = new javax.swing.JComboBox<String>();
+        cbNumeroPalavras = new javax.swing.JComboBox<>();
         pnDiferentesCategorias = new javax.swing.JPanel();
         chbDiferentesCategorias = new javax.swing.JCheckBox();
         pnBotoes = new javax.swing.JPanel();
@@ -79,7 +78,7 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         lbNumeroJogadores.setText("Número de Jogadores");
         pnNumeroJogadores.add(lbNumeroJogadores);
 
-        cbNumeroJogadores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione Número Jogador" }));
+        cbNumeroJogadores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione Número Jogador" }));
         pnNumeroJogadores.add(cbNumeroJogadores);
 
         pnCentral.add(pnNumeroJogadores);
@@ -87,7 +86,7 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         lbNumeroEtapas.setText("Número de Etapas");
         pnNumeroEtapas.add(lbNumeroEtapas);
 
-        cbNumeroEtapas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione Número Etapas" }));
+        cbNumeroEtapas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione Número Etapas" }));
         pnNumeroEtapas.add(cbNumeroEtapas);
 
         pnCentral.add(pnNumeroEtapas);
@@ -95,7 +94,7 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         lbNumeroPalavras.setText("Número de Palavras");
         pnNumeroPalavras.add(lbNumeroPalavras);
 
-        cbNumeroPalavras.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione Número Palavras" }));
+        cbNumeroPalavras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione Número Palavras" }));
         pnNumeroPalavras.add(cbNumeroPalavras);
 
         pnCentral.add(pnNumeroPalavras);
@@ -196,17 +195,9 @@ public final class ViewConfiguracoes extends javax.swing.JFrame {
         for (Integer i = 1; i <=  controllerConfiguracao.getLimiteNumeroEtapas() ; i++) {
             cbNumeroEtapas.addItem(i.toString());
         }
-        for (Integer i = 1; i <= (int) controllerConfiguracao.getLimiteNumeroPalavras(); i++) {
+        for (Integer i = 1; i <= controllerConfiguracao.getLimiteNumeroPalavras(); i++) {
             cbNumeroPalavras.addItem(i.toString());
         }
-        /*
-        if((Integer)controllerConfiguracao.get("numeroEtapas") != 0)
-            cbNumeroEtapas.setSelectedItem(configuracoes.);
-        if((Integer)controllerConfiguracao.get("numeroPalavras") != 0)
-            cbNumeroPalavras.setSelectedItem(controllerConfiguracao.get("numeroPalavras"));
-        if((Integer)controllerConfiguracao.get("numeroJogadores") != 0)
-            cbNumeroJogadores.setSelectedItem(controllerConfiguracao.get("numeroJogadores"));
-            */
     }
     /** Este método irá trocar a Janela atual por outra janela estabelecida pelo parâmetro.
      * 
