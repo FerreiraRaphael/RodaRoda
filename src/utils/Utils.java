@@ -24,7 +24,11 @@ public class Utils {
         range = (max - min) + 1;
         return (int) (Math.random() * range) + min;
     }
-    
+    /** Este método ira unir um conjunto de Strings com uma | entre cada um.
+     * 
+     * @param strings ArrayList<String> - Arquivo com Strings que serão unidas.
+     * @return String - Retornará o conjunto de Strings unidos em uma única.
+     */
     public String unirString(ArrayList<String> strings){
         String retorno = "";
         for(String string : strings){
